@@ -1,0 +1,1 @@
+export const initialUrl = process.env.REACT_APP_INITIAL_URL

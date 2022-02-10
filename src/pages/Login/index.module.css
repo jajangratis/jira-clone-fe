@@ -1,0 +1,31 @@
+.layoutBlueLogin {
+    height: 100vh;
+    background: #5C7AEA;
+}
+.layoutLogin {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.textLogin {
+    height: 80vh;
+    color: white;
+}
+
+.layoutText {
+    line-height: 100px;
+    text-align: center;
+}
+
+.btnStyle {
+    width: '100% !important';
+    box-shadow: 'none !important';
+    color: 'teal !important';
+    background: '#222E61 !important';
+    text-transform: 'capitalize !important';
+}
+
+.formLogin {
+}
