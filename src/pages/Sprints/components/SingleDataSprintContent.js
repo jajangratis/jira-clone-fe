@@ -42,7 +42,6 @@ export default function SingleDataSprintContent({
 }) {
     const sprintsState = useSelector(state => state.sprints)
     const errorSprintState = sprintsState?.errorMessage?.msg
-    console.log({sprintsState});
     const ERROR_MESSAGE = useMemo(() => {
         return {
             'invalid_date': 'Tanggal Mulai dan Finish tidak sesuai',

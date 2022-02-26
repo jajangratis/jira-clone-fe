@@ -4,6 +4,7 @@ import ListIcon from '@mui/icons-material/List';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import BoltIcon from '@mui/icons-material/Bolt';
 import DeleteIcon from '@mui/icons-material/Delete';
+import BookIcon from '@mui/icons-material/Book';
 
 export function HomeIcon(props) {
   return (
@@ -39,6 +40,12 @@ export function BoltIconWrap(props) {
 export function DeleteIconWrap(props) {
   return (
     <DeleteIcon {...props} />
+  )
+}
+
+export function BookIconWrap(props) {
+  return (
+    <BookIcon {...props} />
   )
 }
 

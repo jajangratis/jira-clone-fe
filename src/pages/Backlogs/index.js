@@ -1,6 +1,8 @@
 import { Grid } from "@mui/material"
 import NavigationBar from "../../components/NavigationBar"
 import TopBar from "../../components/TopBar"
+import BacklogContents from "./components/BacklogContents"
+
 
 const Backlogs = () => {
     return (
@@ -12,7 +14,7 @@ const Backlogs = () => {
                 <Grid container direction='column'>
                     <TopBar/>
                     <Grid item xs={11}>
-                        <p> Backlogs Content</p>
+                       <BacklogContents/>
                     </Grid>
                 </Grid>
             </Grid>
