@@ -12,6 +12,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from '@mui/material/Accordion';
 import { BoltIconWrap, BookIconWrap } from "../../../components/Icons";
 import SingleDataBacklogContents from "./SingleDataBacklogContents";
+import BacklogAdd from "./BacklogAdd";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -33,6 +34,7 @@ const BacklogContents = () => {
     const [open, setOpen] = useState(false);
     const [singleData, setSingleData] = useState()
     const [singleDataSprint, setSingleDataSprint] = useState()
+    const [isNewSub, setIsAddNewSub] = useState(backlogData.map(x => x.c_sprint_id).reduce((a, v) => ({ ...a, [v]: false}), {}) )
     
     useEffect(() => {
         dispatch(backlogGetData())
@@ -40,18 +42,20 @@ const BacklogContents = () => {
     }, [])
     useEffect(() => {
         setbacklog(backlogData)
+        setIsAddNewSub(backlogData.map(x => x.c_sprint_id).reduce((a, v) => ({ ...a, [v]: false}), {}) )
     }, [backlogData])
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+  
+    console.log({isNewSub});
     return (
         <Stack spacing={2}>
             <SingleDataBacklogContents handleClose={handleClose} handleOpen={handleOpen} open={open} taskData={singleData} sprintData={singleDataSprint}/>
             {
                 backlogData.length > 0 ?
                     backlogData.map(backlog => 
-                        <Accordion  style={{ width: '100%', backgroundColor: '#f0f0f0' }}>
+                        <Accordion  style={{ width: '100%', backgroundColor: '#f0f0f0' }} key={backlog.c_backlog_id}>
                             <AccordionSummary
                                 aria-controls={`'panel-content'${backlog.c_sprint_id}`}
                                 id={`'panel-content'${backlog.c_sprint_id}`}
@@ -95,7 +99,17 @@ const BacklogContents = () => {
                                             </div>
                                         )
                                     )
-                                : <Typography className={`centered`} >No backlogs</Typography>}
+                                : ''}
+                                {/* {isNewSub[backlog.c_sprint_id] ?  <BacklogAdd sprintData={backlog} taskData={singleData}/> : <Typography className={`centered`} onClick={() => {
+                                    setIsAddNewSub((prev, curr) => {
+                                        let newPrev = prev
+                                        newPrev[backlog.c_sprint_id] = true
+                                        console.log({prev, newPrev, curr}, backlog.c_sprint_id);
+                                        return newPrev
+                                    })
+                                    console.log({UU: isNewSub}, isNewSub[backlog.c_sprint_id]);
+                                }}>Add Backlog</Typography>} */}
+                                <BacklogAdd sprintData={backlog} taskData={singleData}/>
                             </AccordionDetails>
                         </Accordion>
                     )

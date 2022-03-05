@@ -30,10 +30,13 @@ export const backlogSubtaskAddData = (data) => {
         }
         try {
             let response = await sendRequest()
-            let getData = await getTaskData()
+            let getData 
+            if (data !== undefined) {
+                getData = await getTaskData()
+            }
             dispatch(backlogTasksActions.addSubTask({
                 type: 'BACKLOG_TASK_SUBTASK_ADD_REDUCER_FULFILLED',
-                data: getData
+                data: data !== undefined ? getData : undefined
             }))
         } catch (error) {
             console.log({error});

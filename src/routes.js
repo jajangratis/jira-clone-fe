@@ -14,6 +14,7 @@ import { masterData, masterUser } from "./global/actions"
 const Backlogs = React.lazy(() => import('./pages/Backlogs'));
 const Sprints = React.lazy(() => import('./pages/Sprints'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
+const SingleDataBacklog = React.lazy(() => import('./pages/Backlogs/components/SingleDataBacklogPage'));
 
 
 
@@ -37,6 +38,7 @@ const MainRoutes = () => {
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/home' element={<Home/>}/>
                 <Route path='/backlogs' element={<Backlogs/>}/>
+                <Route path='/backlogs/:c_backlog_id' element={<SingleDataBacklog/>}/>
                 <Route path='/sprints' element={<Sprints/>}/>
                 <Route path='*' element={<NotFound/>} />
             </Routes>
