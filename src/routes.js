@@ -23,8 +23,8 @@ const MainRoutes = () => {
     useEffect(() => {
         dispatch(masterData())
         dispatch(masterUser())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        
+    }, [dispatch])
     const authState = useSelector(state => state.auth)
     return (
         <Suspense fallback={

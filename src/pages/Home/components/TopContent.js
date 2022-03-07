@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { BoltIconWrap } from "../../../components/Icons";
 
 
-const TopContent = () => {
+const TopContent = ({timesprint}) => {
     return (
         <Grid container direction='row' style={{marginTop: '1em'}} >
             <Grid item xs={6}>

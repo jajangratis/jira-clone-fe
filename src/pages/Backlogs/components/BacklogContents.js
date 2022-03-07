@@ -28,7 +28,6 @@ const BacklogContents = () => {
     let {result: backlogData} = backlogState
     const masterState = useSelector(state => state.master)
     const {user} = masterState.result
-    console.log({ masterState });
     const dispatch = useDispatch()
     const [backlog, setbacklog] = useState([])
     const [open, setOpen] = useState(false);
@@ -48,7 +47,6 @@ const BacklogContents = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
   
-    console.log({isNewSub});
     return (
         <Stack spacing={2}>
             <SingleDataBacklogContents handleClose={handleClose} handleOpen={handleOpen} open={open} taskData={singleData} sprintData={singleDataSprint}/>

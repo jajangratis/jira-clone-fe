@@ -6,6 +6,7 @@ import backlogsReducer from './backlogs'
 import backlogsDetailReducer from './backlogsDetail'
 import backlogTasksReducer from './backlogTasks';
 import masterTasksReducer from './master';
+import backlogParentChildReducer from './backlogParentChild';
 
 const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
         backlogTasks: backlogTasksReducer,
         master: masterTasksReducer,
         backlogsDetail: backlogsDetailReducer,
+        backlogsParentChild:backlogParentChildReducer,
     }
 });
 
