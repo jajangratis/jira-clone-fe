@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Grid, Stack } from '@mui/material';
+import { Button, Grid, Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux'
 import { backlogSubtaskAddData } from '../actions/add-subtask';
 
@@ -52,32 +52,34 @@ const BacklogAdd = ({
         setNewStoryPoint(event.target.value);
     };
     return (
-        <Grid container direction='row' alignItems="center" style={{border: '1px solid', marginTop: '5px'}}>
-            <Grid items xs={6}>
-                <TextField  variant="standard" onKeyPress={onFinishedAddNewSubHandler}/>
+        <Box>
+            <Grid container direction='row' alignItems="center" style={{border: '1px solid', marginTop: '5px'}}>
+                <Grid items xs={12}>
+                    <TextField  variant="standard" onKeyPress={onFinishedAddNewSubHandler} sx={{width: '100%'}} />
+                </Grid>
+                <Box items xs={12} >
+                    <Select
+                        value={newAssigne}
+                        label="Assigne"
+                        onChange={handleChangeNewAssigne}
+                    >
+                        {user.map(x => {
+                            return <MenuItem value={x.c_user_id} key={x.id}>{x.v_fullname}</MenuItem>
+                        })}
+                    </Select>
+                    <Select
+                        value={newStoryPoint}
+                        label="Story Point"
+                        onChange={handleChangeNewStoryPoint}
+                    >
+                        {data.filter(x => x.v_master === 'storypoint').map(x => {
+                            return <MenuItem value={x.c_value_id} key={x.id}>{x.v_value}</MenuItem>
+                        })}
+                    </Select>
+                    <Button onClick={onClickButton}>OK</Button>
+                </Box>
             </Grid>
-            <Grid items xs={6}>
-            <Select
-                value={newAssigne}
-                label="Assigne"
-                onChange={handleChangeNewAssigne}
-            >
-                {user.map(x => {
-                    return <MenuItem value={x.c_user_id} key={x.id}>{x.v_fullname}</MenuItem>
-                })}
-            </Select>
-            <Select
-                value={newStoryPoint}
-                label="Story Point"
-                onChange={handleChangeNewStoryPoint}
-            >
-                {data.filter(x => x.v_master === 'storypoint').map(x => {
-                    return <MenuItem value={x.c_value_id} key={x.id}>{x.v_value}</MenuItem>
-                })}
-            </Select>
-            <Button onClick={onClickButton}>OK</Button>
-            </Grid>
-        </Grid>
+        </Box>
     )
 }
 

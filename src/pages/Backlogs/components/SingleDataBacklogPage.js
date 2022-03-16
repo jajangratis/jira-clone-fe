@@ -1,9 +1,7 @@
 import {useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { backlogGetData } from "../actions/get-data"
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 import { useParams, useNavigate } from 'react-router-dom';
 import SingleDataBacklogContents from "./SingleDataBacklogContents";
 import { backlogTaskGetData } from '../actions/get-task-data'
@@ -31,7 +29,7 @@ const SingleDataBacklogPage = () => {
     // }, [backlogData, singleData?.c_sprint_id, c_backlog_id, dispatch])
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => history(-1);
+    const handleClose = () => history('/home');
     return (
         <Stack spacing={2}>
             <SingleDataBacklogContents 

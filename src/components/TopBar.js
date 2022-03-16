@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Menu from '@mui/material/Menu';
@@ -58,7 +58,6 @@ const StyledMenu = styled((props) => (
   }));
 
 const TopBar = () => {
-  const classes = mainClasses.TopBar()
   const dispatch = useDispatch()
   const history = useNavigate()
   const authState = useSelector(state => state.auth)
@@ -75,44 +74,47 @@ const TopBar = () => {
       history('/login')
   };
   return (
-      <Grid item xs={1} justifyContent="flex-end" className={classes.bordering}>
-          <Grid 
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="flex-end"
-          >
-            <Grid item xs={12}>
-                <Button
-                    id="demo-customized-button"
-                    aria-controls={showMenu ? 'demo-customized-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={showMenu ? 'true' : undefined}
-                    variant="text"
-                    disableElevation
-                    onClick={handleClick}
-                    endIcon={<KeyboardArrowDownIcon />}
-                >
-                  <Typography gutterBottom variant="body" component="div" className={`centered`} >
-                    {authState.result.role}, Hi.{authState.result.email}
-                  </Typography>
-                </Button>
-                <StyledMenu
-                    id="demo-customized-menu"
-                    MenuListProps={{
-                    'aria-labelledby': 'demo-customized-button',
-                    }}
-                    anchorEl={showMenu}
-                    open={showMenu}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={handleLogout} disableRipple>
-                        Logout
-                    </MenuItem>
-                </StyledMenu>
-            </Grid>
+      <Box sx={{
+        width: '100%',
+        borderBottom: '1px solid black'
+      }}>
+        <Grid 
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="flex-end"
+        >
+          <Grid item xs={12}>
+              <Button
+                  id="demo-customized-button"
+                  aria-controls={showMenu ? 'demo-customized-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={showMenu ? 'true' : undefined}
+                  variant="text"
+                  disableElevation
+                  onClick={handleClick}
+                  endIcon={<KeyboardArrowDownIcon />}
+              >
+                <Typography gutterBottom variant="body" component="div" className={`centered`} >
+                  Hi. {authState.result.email}
+                </Typography>
+              </Button>
+              <StyledMenu
+                  id="demo-customized-menu"
+                  MenuListProps={{
+                  'aria-labelledby': 'demo-customized-button',
+                  }}
+                  anchorEl={showMenu}
+                  open={showMenu}
+                  onClose={handleClose}
+              >
+                  <MenuItem onClick={handleLogout} disableRipple>
+                      Logout
+                  </MenuItem>
+              </StyledMenu>
           </Grid>
-      </Grid>
+        </Grid>
+      </Box>
   )
 }
 

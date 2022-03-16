@@ -9,8 +9,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 export default function AlertDialog({
     wording,
     wordingButton,
+    variant='outlined',
     onClickAction,
     title,
+    isDisable = false,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -29,7 +31,7 @@ export default function AlertDialog({
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant={variant} onClick={handleClickOpen} disabled={isDisable}>
         {wordingButton}
       </Button>
       <Dialog

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 import { Formik, Form, Field } from 'formik';
 import Modal from '@mui/material/Modal';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -16,10 +16,7 @@ import { sprintActivateData } from '../actions/activate-sprint';
 import { sprintFinishData } from '../actions/finish-sprint';
 
 import ErrorForm from '../../../components/ErrorForm';
-import { DeleteIconWrap } from '../../../components/Icons';
-
-
-
+import { DeleteIconWrap, ModeEditIconWrap, PauseIconWrap, PlayArrowIconWrap } from '../../../components/Icons';
 
 
 const style = {
@@ -142,28 +139,28 @@ export default function SingleDataSprintContent({
                                         <Field label="Finish Sprint" name="d_finish_sprint" placeholder = "Tanggal Selesai" component={InputDate} />
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Grid container direction='row' justifyContent="space-evenly" >
-                                            <Grid item xs={3}>
+                                        <Grid container direction='row' columnSpacing={1} >
+                                            <Grid item xs={'auto'}>
                                                 <Button type="submit" variant="contained">
-                                                    Edit
+                                                   <ModeEditIconWrap /> <Typography>Edit</Typography>
                                                 </Button>
                                             </Grid>
-                                            <Grid item xs={3}>
+                                            <Grid item xs={'auto'}>
                                                 <Button variant="contained" onClick={deleteDataHandler} color="error">
-                                                    <DeleteIconWrap/>
+                                                    <DeleteIconWrap/> <Typography>Delete</Typography>
                                                 </Button>
                                             </Grid>
-                                            <Grid item xs={3}>
-                                                    {
-                                                        sprintData.is_active === 0 && sprintData.is_finish === 0 ? 
-                                                            <Button variant="contained" onClick={activateDataHandler}>
-                                                                Start
-                                                            </Button>
-                                                        :   
-                                                            <Button variant="contained" onClick={finishDataHandler} disabled={sprintData.is_finish === 1}>
-                                                                Finish
-                                                            </Button>
-                                                    }
+                                            <Grid item xs={'auto'}>
+                                                {
+                                                    sprintData.is_active === 0 && sprintData.is_finish === 0 ? 
+                                                        <Button variant="contained" onClick={activateDataHandler}>
+                                                            <PlayArrowIconWrap/><Typography>Start</Typography>
+                                                        </Button>
+                                                    :   
+                                                        <Button variant="contained" onClick={finishDataHandler} disabled={sprintData.is_finish === 1}>
+                                                            <PauseIconWrap/><Typography>Finish</Typography>
+                                                        </Button>
+                                                }
                                             </Grid>
                                         </Grid>
                                     </Grid>

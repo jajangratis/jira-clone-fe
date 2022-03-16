@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 import { Formik, Form, Field } from 'formik';
 import Modal from '@mui/material/Modal';
-import { Grid } from '@mui/material';
+import { Grid, Typography, } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 
@@ -12,7 +12,7 @@ import moment from 'moment';
 import { InputText, InputDate } from '../../../components/Input';
 import { sprintAddData } from '../actions/add-data';
 import ErrorForm from '../../../components/ErrorForm';
-
+import { PostAddIconWrap } from '../../../components/Icons';
 
 
 const style = {
@@ -59,7 +59,7 @@ export default function FormSprintAdd({
         dispatch(sprintAddData(values))
     }
     return (
-        <div>
+        <Box>
         <Button variant="contained" onClick={handleOpen}>
             Create Sprint
         </Button>
@@ -85,10 +85,10 @@ export default function FormSprintAdd({
                     }}
                     >
                     {({ isSubmitting, isValidating }) => (
-                        <div style={{}}>
+                        <Box style={{}}>
                             {errorMessage != null && <ErrorForm message={errorMessage} />}
                             <Form>
-                                <Grid container direction='column' spacing={3}>
+                                <Grid container direction='column' spacing={3} >
                                     <Grid item xs={3}>
                                         <Field label="Title" name="v_sprint_title" placeholder = "Masukkan judul sprint" component={InputText} />
                                     </Grid>
@@ -103,16 +103,16 @@ export default function FormSprintAdd({
                                     </Grid>
                                     <Grid item xs={3}>
                                         <Button type="submit" variant="contained">
-                                            Add
+                                            <Typography><PostAddIconWrap sx={{fontSize: '15px'}}/> Add</Typography>
                                         </Button>
                                     </Grid>
                                 </Grid>
                             </Form>
-                        </div>
+                        </Box>
                     )}
                 </Formik>
             </Box>
         </Modal>
-        </div>
+        </Box>
     );
 }

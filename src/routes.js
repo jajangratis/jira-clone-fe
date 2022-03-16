@@ -6,14 +6,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 // import Backlogs from "./pages/Backlogs";
-// import Sprints from "./pages/Sprints";
+import Sprints from "./pages/Sprints";
 // import NotFound from "./pages/NotFound";
 
 import { masterData, masterUser } from "./global/actions"
 
 const Backlogs = React.lazy(() => import('./pages/Backlogs'));
-const Sprints = React.lazy(() => import('./pages/Sprints'));
+// const Sprints = React.lazy(() => import('./pages/Sprints'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
+const RetroSpective = React.lazy(() => import('./pages/Retro'));
 const SingleDataBacklog = React.lazy(() => import('./pages/Backlogs/components/SingleDataBacklogPage'));
 
 
@@ -39,6 +40,7 @@ const MainRoutes = () => {
                 <Route path='/home' element={<Home/>}/>
                 <Route path='/backlogs' element={<Backlogs/>}/>
                 <Route path='/backlogs/:c_backlog_id' element={<SingleDataBacklog/>}/>
+                <Route path='/retrospective/:c_sprint_id' element={<RetroSpective/>}/>
                 <Route path='/sprints' element={<Sprints/>}/>
                 <Route path='*' element={<NotFound/>} />
             </Routes>

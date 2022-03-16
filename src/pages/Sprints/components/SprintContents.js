@@ -83,7 +83,6 @@ const SprintContents = () => {
                                     let startDate = x.d_start_sprint ? x.d_start_sprint.split('T'):['']
                                     let endDate = x.d_finish_sprint ? x.d_finish_sprint.split('T'):['']
                                     return <Item className={indexClasses.hoveredItem} onClick={() => {
-                                        console.log(x);
                                         setOpen(true) 
                                         setSingleData(x)
                                     }}>
@@ -92,10 +91,15 @@ const SprintContents = () => {
                                                 <BoltIconWrap/>
                                             </Grid>
                                             <Grid items xs={2}>
-                                                {x.v_sprint_title}
+                                                <Typography>
+                                                    {x.v_sprint_title}
+                                                </Typography>
                                             </Grid>
                                             <Grid items xs={9} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                                Duration {startDate[0]} - {endDate[0]}
+                                                
+                                                <Typography>
+                                                    Duration {startDate[0]} - {endDate[0]}
+                                                </Typography>
                                             </Grid>
                                         </Grid>
                                     </Item>
@@ -112,7 +116,6 @@ const SprintContents = () => {
                                     let startDate = x.d_start_sprint ? x.d_start_sprint.split('T'):['']
                                     let endDate = x.d_finish_sprint ? x.d_finish_sprint.split('T'):['']
                                     return <Item className={indexClasses.hoveredItem} onClick={() => {
-                                        console.log(x);
                                         setOpen(true) 
                                         setSingleData(x)
                                     }}>
@@ -121,10 +124,14 @@ const SprintContents = () => {
                                                 <BoltIconWrap/>
                                             </Grid>
                                             <Grid items xs={2}>
-                                                {x.v_sprint_title}
+                                                <Typography>
+                                                    {x.v_sprint_title}
+                                                </Typography>
                                             </Grid>
                                             <Grid items xs={9} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                                Duration {startDate[0]} - {endDate[0]}
+                                                <Typography>
+                                                    Duration {startDate[0]} - {endDate[0]}
+                                                </Typography>
                                             </Grid>
                                         </Grid>
                                     </Item>
@@ -150,10 +157,14 @@ const SprintContents = () => {
                                                 <BoltIconWrap/>
                                             </Grid>
                                             <Grid items xs={2}>
-                                                {x.v_sprint_title}
+                                                <Typography>
+                                                    {x.v_sprint_title}
+                                                </Typography>
                                             </Grid>
                                             <Grid items xs={9} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                                Duration {startDate[0]} - {endDate[0]}
+                                                <Typography>
+                                                    Duration {startDate[0]} - {endDate[0]}
+                                                </Typography>
                                             </Grid>
                                         </Grid>
                                     </Item>

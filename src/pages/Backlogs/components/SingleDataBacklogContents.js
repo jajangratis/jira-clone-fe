@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -12,17 +12,16 @@ import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 
 import { Grid, Stack } from '@mui/material';
-import { BoltIconWrap, BookIconWrap } from '../../../components/Icons';
+import { BoltIconWrap, AssignmentIconWrap } from '../../../components/Icons';
 import { useDispatch, useSelector } from 'react-redux'
 import { backlogTaskGetData } from '../actions/get-task-data'
 import { backlogSubtaskEditData } from '../actions/edit-backlog'
-import { backlogSubtaskAddData } from '../actions/add-subtask';
 import { backlogGetData } from '../actions/get-data'
 import { backlogSubtaskDeleteData } from '../actions/delete-backlog'
 import { backlogGetDataDetail } from '../actions/detail-backlog'
+import { recreateAndReplace } from '../../../helper/recreate-reassign-object';
 
-
-import AlertDialog from '../../../components/styles/Dialog';
+import AlertDialog from '../../../components/Dialog';
 import BacklogAdd from './BacklogAdd';
 
 
@@ -56,7 +55,6 @@ export default function SingleDataBacklogContents({
     const dispatch = useDispatch()
     const history = useNavigate()
     const [isNewSub, setIsAddNewSub] = useState(false)
-    const [newAssigne, setNewAssigne] = useState('');
 
     const [taskDataState, setTaskDataState] = useState(taskData)
 
@@ -67,27 +65,8 @@ export default function SingleDataBacklogContents({
     const [descriptionEdit, setDescriptionEdit] = useState(false)
     const [titleData, setTitleData] = useState(taskDataState?.v_title)
     const [descriptionData, setDescriptionData] = useState(taskDataState?.v_description)
+    
 
-    function recreateValue(obj, value, prevState) {
-        let result = {
-            "id": prevState.id,
-            "c_backlog_id": prevState.c_backlog_id,
-            "c_backlog_id_parent": prevState.c_backlog_id_parent,
-            "v_title": prevState.v_title,
-            "v_description": prevState.v_description,
-            "c_assignee": prevState.c_assignee,
-            "v_story_point": prevState.v_story_point,
-            "v_priority": prevState.v_priority,
-            "c_progress_id": prevState.c_progress_id,
-            "d_created_date": prevState.d_created_date,
-            "v_created_by": prevState.v_created_by,
-            "d_updated_date": prevState.d_updated_date,
-            "v_updated_by": prevState.v_updated_by,
-            "c_status_id": prevState.c_status_id,
-        }
-        result[obj] = value
-        return result
-    }
     useEffect(() => {
         dispatch(backlogGetDataDetail())
     }, [dispatch])
@@ -115,9 +94,10 @@ export default function SingleDataBacklogContents({
         // TODO dispatch ke db
         if (event.target.value !== undefined) {
             setTaskDataState((prevState, props) => {
-                return recreateValue('v_story_point', event.target.value, prevState)
+                // return recreateValue('v_story_point', event.target.value, prevState)
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_story_point', event.target.value)))
+                return recreateAndReplace(prevState, 'v_story_point', event.target.value)
             })
-            dispatch(backlogSubtaskEditData(taskDataState))
             setStoryPointEdit(false)
         }
     }
@@ -134,9 +114,10 @@ export default function SingleDataBacklogContents({
         
         if (event.target.value !== undefined) {
             setTaskDataState((prevState, props) => {
-                return recreateValue('c_assignee', event.target.value, prevState)
+                // return recreateValue('c_assignee', event.target.value, prevState)
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'c_assignee', event.target.value)))
+                return recreateAndReplace(prevState, 'c_assignee', event.target.value)
             })
-            dispatch(backlogSubtaskEditData(taskDataState))
             setAssigneeEdit(false)
         }        
     }
@@ -152,9 +133,9 @@ export default function SingleDataBacklogContents({
         // TODO dispatch ke db
         if (event.target.value !== undefined) {
             setTaskDataState((prevState, props) => {
-                return recreateValue('c_progress_id', event.target.value, prevState)
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'c_progress_id', event.target.value)))
+                return recreateAndReplace(prevState, 'c_progress_id', event.target.value)
             })
-            dispatch(backlogSubtaskEditData(taskDataState))
             setProgressEdit(false)
         }
     }
@@ -171,8 +152,8 @@ export default function SingleDataBacklogContents({
             if (event.target.value !== undefined) {
                 setTitleData(event.target.value)
                 setTaskDataState((prevState, props) => {
-                    dispatch(backlogSubtaskEditData(recreateValue('v_title', event.target.value, prevState)))
-                    return recreateValue('v_title', event.target.value, prevState)
+                    dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_title', event.target.value)))
+                    return recreateAndReplace(prevState, 'v_title', event.target.value)
                 })
                 setTitleEdit(false)
             }
@@ -182,8 +163,9 @@ export default function SingleDataBacklogContents({
         if (event.target.value !== undefined) {
             setTitleData(event.target.value)
             setTaskDataState((prevState, props) => {
-                dispatch(backlogSubtaskEditData(recreateValue('v_title', event.target.value, prevState)))
-                return recreateValue('v_title', event.target.value, prevState)
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_title', event.target.value)))
+                return recreateAndReplace(prevState, 'v_title', event.target.value)
+                
             })
             setTitleEdit(false)
         }
@@ -198,8 +180,8 @@ export default function SingleDataBacklogContents({
             if (event.target.value !== undefined) {
                 setDescriptionData(event.target.value)
                 setTaskDataState((prevState, props) => {
-                    dispatch(backlogSubtaskEditData(recreateValue('v_description', event.target.value, prevState)))
-                    return recreateValue('v_description', event.target.value, prevState)
+                    dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_description', event.target.value)))
+                    return recreateAndReplace(prevState, 'v_description', event.target.value)
                 })
                 setDescriptionEdit(false)
             }
@@ -209,8 +191,9 @@ export default function SingleDataBacklogContents({
         if (event.target.value !== undefined) {
             setDescriptionData(event.target.value)
             setTaskDataState((prevState, props) => {
-                dispatch(backlogSubtaskEditData(recreateValue('v_description', event.target.value, prevState)))
-                return recreateValue('v_description', event.target.value, prevState)
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_description', event.target.value)))
+                return recreateAndReplace(prevState, 'v_description', event.target.value)
+                
             })
             setDescriptionEdit(false)
         }
@@ -235,9 +218,9 @@ export default function SingleDataBacklogContents({
                             spacing={1}
                         >
                             {taskDataState ? (
-                                <div>
-                                    <div style={{display:'flex',  marginBottom: '5px'}}>
-                                        <BookIconWrap/>
+                                <Box>
+                                    <Box sx={{display:'flex',  marginBottom: '5px'}}>
+                                        <AssignmentIconWrap color="success"/>
                                         
                                         
                                             <Breadcrumbs aria-label="breadcrumb">
@@ -246,6 +229,7 @@ export default function SingleDataBacklogContents({
                                                     underline="hover"
                                                     color="inherit"
                                                     onClick={() => history('/backlogs/'+taskDataState.c_backlog_id_parent)}
+                                                    sx={{cursor: 'pointer'}}
                                                 >
                                                     {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id_parent)[0].v_title}
                                                 </Link>
@@ -255,6 +239,7 @@ export default function SingleDataBacklogContents({
                                                     color="text.primary"
                                                     onClick={() => history('/backlogs/'+taskDataState.c_backlog_id)}
                                                     aria-current="page"
+                                                    sx={{cursor: 'pointer'}}
                                                 >
                                                     {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id)[0].v_title}
                                                 </Link>
@@ -263,7 +248,7 @@ export default function SingleDataBacklogContents({
                                             
                                         
                                         
-                                    </div>
+                                    </Box>
                                     <Typography variant="h3" gutterBottom component="div" onClick={handleOnClickTitle}>
                                         {titleEdit ? 
                                             <TextField 
@@ -276,7 +261,7 @@ export default function SingleDataBacklogContents({
                                             : taskDataState.v_title
                                         }
                                     </Typography>
-                                    <Typography variant="h6" gutterBottom component="div" style={{height: '300px'}} onClick={handleOnClickDescription}>
+                                    <Typography style={{height: '300px'}} onClick={handleOnClickDescription}>
                                         { descriptionEdit ? 
                                             <TextField 
                                                 multiline={true} 
@@ -290,7 +275,7 @@ export default function SingleDataBacklogContents({
                                             :taskDataState.v_description
                                         }
                                     </Typography>
-                                    <Typography variant="h6" gutterBottom component="div" onClick={handleOnClickAssigne}>
+                                    <Typography gutterBottom component="div" onClick={handleOnClickAssigne} >
                                         Assigne : 
                                         {assigneEdit ? 
                                         <Select
@@ -299,15 +284,16 @@ export default function SingleDataBacklogContents({
                                             label="Assigne"
                                             onChange={handleOnChangeAssigne}
                                             onBlur={handleOnCloseAssigne}
+                                            sx={{height: '35px', ml: '5px'}}
                                         >
                                             {user.map(x => {
-                                                return <MenuItem key={x.c_user_id} value={x.c_user_id}>{x.v_fullname}</MenuItem>
+                                                return <MenuItem key={x.c_user_id} value={x.c_user_id} >{x.v_fullname}</MenuItem>
                                             })}
                                         </Select>
                                         : user ? user.filter(y => y.c_user_id === taskDataState.c_assignee)[0]?.v_fullname : taskDataState.c_assignee}
                                         
                                     </Typography>
-                                    <Typography variant="h6" gutterBottom component="div" onClick={handleOnClickStoryPoint}>
+                                    <Typography gutterBottom component="div" onClick={handleOnClickStoryPoint}>
                                         Story Point : 
                                         {storyPointEdit ?
                                         <Select
@@ -316,6 +302,7 @@ export default function SingleDataBacklogContents({
                                             label="Story Point"
                                             onChange={handleOnChangeStoryPoint}
                                             onBlur={handleOnCloseStory}
+                                            sx={{height: '35px', ml: '5px'}}
                                         >
                                             {data.filter(x => x.v_master === 'storypoint').map(x => {
                                                 return <MenuItem key={x.c_value_id} value={x.c_value_id}>{x.v_value}</MenuItem>
@@ -323,7 +310,7 @@ export default function SingleDataBacklogContents({
                                         </Select>
                                         : taskDataState.v_story_point }
                                     </Typography>
-                                    <Typography variant="h6" gutterBottom component="div" onClick={handleOnClickProgress}>
+                                    <Typography gutterBottom component="div" onClick={handleOnClickProgress}>
                                         Progress: 
                                         {progressEdit ? 
                                         <Select
@@ -332,6 +319,7 @@ export default function SingleDataBacklogContents({
                                             label="Progress"
                                             onChange={handleOnChangeProgress}
                                             onBlur={handleOnCloseProgress}
+                                            sx={{height: '35px', ml: '5px'}}
                                         >
                                             {data.filter(x => x.v_master === 'backlogprogress').map(x => {
                                                 return <MenuItem key={x.c_value_id} value={x.c_value_id}>{x.v_value}</MenuItem>
@@ -345,7 +333,7 @@ export default function SingleDataBacklogContents({
                                         handleClose()
                                         window.location.reload(false);
                                     }}/>
-                                </div>
+                                </Box>
                             ) : <Typography></Typography>}
                             
                         </Stack>

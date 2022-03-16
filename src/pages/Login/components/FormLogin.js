@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Grid } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 
 import { InputText,InputPassword } from '../../../components/Input';
 import { loginAction } from '../actions/auth-actions';
@@ -48,7 +48,6 @@ const LoginForm = () => {
   }
   let initial = { email: '', password: '' }
   return (
-    <div>
       <Formik
         initialValues={initial}
         validate={validateForm}
@@ -67,31 +66,29 @@ const LoginForm = () => {
         }}
       >
         {({ isSubmitting, isValidating }) => (
-          <div className={classes.formLogin}>
+          <Box sx={{width: '20rem'}}>
             <Form>
-              <Grid container direction="column" spacing={{ xs: 2, md: 3 }}>
+              <Grid container direction="column" spacing={{ xs: 2, md: 3 }} sx={{width: '20rem'}}>
                 <Grid item xs={3}>
                   {error && <ErrorForm message={TEXT_ERROR[error]} />}
                 </Grid>
                 <Grid item xs={3}>
-                  <Field label = "email" name="email" placeholder = "Masukkan email Anda disini" component={InputText} />
+                  <Field label = "email" name="email" placeholder = "Masukkan email Anda disini" component={InputText} sx={{width: '14rem'}}/>
                 </Grid>
                 <Grid item xs={3}>
-                  <Field label = "password" name="password" component={InputPassword}/>
+                  <Field label = "password" name="password" component={InputPassword} sx={{width: '14rem'}}/>
                 </Grid>
                 <Grid item xs={3}>
                   {authState.isLoading ? <CircularProgress/> : <Button type="submit" disabled={isSubmitting && !isValidating} className={`${classes.btnStyle} centered`} variant="contained">
-                    Login
+                    <Typography>Login</Typography>
                   </Button>}
                 </Grid>
 
               </Grid>
             </Form>
-          </div>
+          </Box>
         )}
       </Formik>
-    </div>
-
   )
 };
 
