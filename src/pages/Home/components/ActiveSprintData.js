@@ -20,6 +20,7 @@ import { backlogGetDataParentChild } from "../actions/get-data"
 import { backlogEditData } from '../actions/edit-backlog';
 import { recreateAndReplace } from '../../../helper/recreate-reassign-object';
 import { AssignmentIconWrap, TaskIconWrap, ExpandMoreIconWrap } from '../../../components/Icons';
+import { sprintGetData } from '../../Sprints/actions/get-data';
 
 
 
@@ -38,6 +39,12 @@ const itemStyle = {width: '100vh'}
 const ActiveSprintData = () => {
     const dispatch = useDispatch()
     const history = useNavigate()
+    const sprintState = useSelector(state => state.sprints)
+    useEffect(() => {
+        dispatch(sprintGetData())
+    }, [dispatch])
+    let activeSprint = sprintState?.result.filter(x => x.is_active === 1)[0]
+    activeSprint = activeSprint ? sprintState?.result[0] : activeSprint
     const backlogParentChildState = useSelector(state => state.backlogsParentChild)
     const [parentChildData, setParentChildData] = useState(backlogParentChildState.result)
     
@@ -47,19 +54,18 @@ const ActiveSprintData = () => {
     const progressMaster = data?.filter(x => x.v_master === 'backlogprogress')
 
     useEffect(() => {
-        dispatch(backlogGetDataParentChild())
-    }, [dispatch])
+        dispatch(backlogGetDataParentChild(activeSprint?.c_sprint_id))
+    }, [dispatch, activeSprint?.c_sprint_id ])
     useEffect(() => {
         setParentChildData(backlogParentChildState.result)
     }, [backlogParentChildState.result])
-
     return (
         <Box
             // direction="column"
             // justifyContent="center"
             // alignItems="flex-start"
             // spacing={2}
-            sx={{overflowX: 'scroll', maxHeight:'87.5vh',}}
+            sx={{overflowX: 'scroll', maxHeight:'85vh',}}
         >       
             <Box sx={{display: 'flex', }}>
                 {progressMaster.length > 0 && progressMaster.map(x => {

@@ -4,11 +4,11 @@ import { sprintGetData } from "../actions/get-data"
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 import { BoltIconWrap } from "../../../components/Icons";
@@ -54,7 +54,7 @@ const SprintContents = () => {
 
     return (
         
-            <Stack spacing={2}>
+            <Stack spacing={2} sx={{overflowX: 'scroll'}}>
                 <SingleDataSprintContent handleClose={handleClose} handleOpen={handleOpen} open={open} sprintData={singleData}/>
                 <TextField
                     id="sprint-searchj"
@@ -73,7 +73,7 @@ const SprintContents = () => {
                 >
                 </Grid> */}
                 {sprint.length > 0 ? (
-                    <div>
+                    <Box>
                         <Grid items xs={12} spacing={2}>
                             <Typography gutterBottom variant="h6" component="div">
                                 Active Sprint
@@ -171,8 +171,10 @@ const SprintContents = () => {
                                 })}
                             </Stack>
                         </Grid>
-                    </div>
-                ) : <p>Empty</p>}
+                    </Box>
+                ) : <Box>
+                        {sprintState.isLoading ? <CircularProgress/> : <Typography>Kosong</Typography>}
+                    </Box>}
             </Stack>
             
         

@@ -83,19 +83,19 @@ export const InputDate = ({
     label,
     form,
 }) => {
-  let nowDate = moment().format('YYYY-MM-DD').toString()
-  const [value, setValue] = useState(nowDate);
+  const [newValue, setNewValueValue] = useState(moment(field.value,'YYYY-MM-DD').format('YYYY-MM-DD').toString());
+  console.log({newValue, field});
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={3}>
         <DesktopDatePicker
           {...field}
           label={label}
-          value={value}
+          value={newValue}
           minDate={new Date('2017-01-01')}
-          onChange={(newValue) => {
-            setValue(newValue);
-            form.setFieldValue(field.name, moment(newValue,'YYYY-MM-DD').format('YYYY-MM-DD').toString())
+          onChange={(newValueData) => {
+            setNewValueValue(moment(newValueData,'YYYY-MM-DD').format('YYYY-MM-DD').toString());
+            form.setFieldValue(field.name, moment(newValueData,'YYYY-MM-DD').format('YYYY-MM-DD').toString())
           }}
           renderInput={(params) => {
             return <TextField {...params} {...field} />

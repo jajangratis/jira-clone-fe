@@ -141,24 +141,24 @@ export default function SingleDataSprintContent({
                                     <Grid item xs={3}>
                                         <Grid container direction='row' columnSpacing={1} >
                                             <Grid item xs={'auto'}>
-                                                <Button type="submit" variant="contained">
-                                                   <ModeEditIconWrap /> <Typography>Edit</Typography>
+                                                <Button type="submit" variant="contained" startIcon={<ModeEditIconWrap />}>
+                                                   <Typography>Edit</Typography>
                                                 </Button>
                                             </Grid>
                                             <Grid item xs={'auto'}>
-                                                <Button variant="contained" onClick={deleteDataHandler} color="error">
-                                                    <DeleteIconWrap/> <Typography>Delete</Typography>
+                                                <Button variant="contained" onClick={deleteDataHandler} color="error" startIcon={<DeleteIconWrap/>}>
+                                                    <Typography>Delete</Typography>
                                                 </Button>
                                             </Grid>
                                             <Grid item xs={'auto'}>
                                                 {
                                                     sprintData.is_active === 0 && sprintData.is_finish === 0 ? 
-                                                        <Button variant="contained" onClick={activateDataHandler}>
-                                                            <PlayArrowIconWrap/><Typography>Start</Typography>
+                                                        <Button variant="contained" onClick={activateDataHandler} startIcon={<PlayArrowIconWrap/>}>
+                                                            <Typography>Start</Typography>
                                                         </Button>
                                                     :   
-                                                        <Button variant="contained" onClick={finishDataHandler} disabled={sprintData.is_finish === 1}>
-                                                            <PauseIconWrap/><Typography>Finish</Typography>
+                                                        <Button variant="contained" onClick={finishDataHandler} disabled={sprintData.is_finish === 1} startIcon={<PauseIconWrap/>}>
+                                                            <Typography>Finish</Typography>
                                                         </Button>
                                                 }
                                             </Grid>

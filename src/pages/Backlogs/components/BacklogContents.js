@@ -51,7 +51,7 @@ const BacklogContents = () => {
             {
                 backlogData.length > 0 ?
                     backlogData.map(backlog => 
-                        <Accordion  style={{ width: '100%', backgroundColor: '#f0f0f0' }} key={backlog.c_backlog_id} defaultExpanded={true}>
+                        <Accordion  style={{ width: '100%', backgroundColor: '#F4F5F7' }} key={backlog.c_backlog_id} defaultExpanded={true}>
                             <AccordionSummary
                                 aria-controls={`'panel-content'${backlog.c_sprint_id}`}
                                 id={`'panel-content'${backlog.c_sprint_id}`}
@@ -87,11 +87,14 @@ const BacklogContents = () => {
                                                 }}
                                             
                                             >
-                                                <Grid container direction='row' alignItems="center"  style={{backgroundColor: 'white', border: '0.5px solid'}}>
+                                                <Grid container direction='row'  style={{backgroundColor: 'white', border: '0.5px solid'}}>
                                                     <Grid items xs={2} sx={{ml: '5px'}}>
-                                                        <Typography><AssignmentIconWrap color="success" sx={{ fontSize:'20px'}}/> {x.v_title} ({x.v_story_point})</Typography>
+                                                        <Box sx={{display: 'flex', mt: '5px'}}>
+                                                            <AssignmentIconWrap color="success" sx={{ fontSize:'20px'}}/>
+                                                            <Typography>{x.v_title} ({x.v_story_point})</Typography>
+                                                        </Box>
                                                     </Grid>
-                                                    <Grid items xs={9} sx={{textAlign: 'right', ml:'75px'}}>
+                                                    <Grid items xs={9} sx={{textAlign: 'right', ml: '90px'}}>
                                                         <Typography>{user ? user.filter(y => y.c_user_id === x.c_assignee)[0]?.v_fullname : x.c_assignee}</Typography>
                                                     </Grid>
                                                 </Grid>

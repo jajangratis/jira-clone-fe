@@ -23,6 +23,8 @@ import { recreateAndReplace } from '../../../helper/recreate-reassign-object';
 
 import AlertDialog from '../../../components/Dialog';
 import BacklogAdd from './BacklogAdd';
+import TextEditor from './TextEditor';
+
 
 
 
@@ -175,18 +177,18 @@ export default function SingleDataBacklogContents({
     const handleOnClickDescription = () => {
         setDescriptionEdit(true)
     }
-    const handleOnKeyPressDescription = (event) => {
-        if(event.key === 'Enter'){
-            if (event.target.value !== undefined) {
-                setDescriptionData(event.target.value)
-                setTaskDataState((prevState, props) => {
-                    dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_description', event.target.value)))
-                    return recreateAndReplace(prevState, 'v_description', event.target.value)
-                })
-                setDescriptionEdit(false)
-            }
-        }
-    }
+    // const handleOnKeyPressDescription = (event) => {
+    //     if(event.key === 'Enter'){
+    //         if (event.target.value !== undefined) {
+    //             setDescriptionData(event.target.value)
+    //             setTaskDataState((prevState, props) => {
+    //                 dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_description', event.target.value)))
+    //                 return recreateAndReplace(prevState, 'v_description', event.target.value)
+    //             })
+    //             setDescriptionEdit(false)
+    //         }
+    //     }
+    // }
     const handleOnBlurDescription = (event) => {
         if (event.target.value !== undefined) {
             setDescriptionData(event.target.value)
@@ -218,121 +220,120 @@ export default function SingleDataBacklogContents({
                             spacing={1}
                         >
                             {taskDataState ? (
-                                <Box>
-                                    <Box sx={{display:'flex',  marginBottom: '5px'}}>
+                                <Box >
+                                    <Box sx={{display:'flex', fontSize: '5px'}}>
                                         <AssignmentIconWrap color="success"/>
-                                        
-                                        
-                                            <Breadcrumbs aria-label="breadcrumb">
-                                                {taskDataState.c_backlog_id_parent ? 
-                                                <Link
-                                                    underline="hover"
-                                                    color="inherit"
-                                                    onClick={() => history('/backlogs/'+taskDataState.c_backlog_id_parent)}
-                                                    sx={{cursor: 'pointer'}}
-                                                >
-                                                    {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id_parent)[0].v_title}
-                                                </Link>
-                                                : ''}
-                                                <Link
-                                                    underline="hover"
-                                                    color="text.primary"
-                                                    onClick={() => history('/backlogs/'+taskDataState.c_backlog_id)}
-                                                    aria-current="page"
-                                                    sx={{cursor: 'pointer'}}
-                                                >
-                                                    {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id)[0].v_title}
-                                                </Link>
-                                            </Breadcrumbs>
-                                            
-                                            
-                                        
-                                        
+                                        <Breadcrumbs aria-label="breadcrumb">
+                                            {taskDataState.c_backlog_id_parent ? 
+                                            <Link
+                                                underline="hover"
+                                                color="inherit"
+                                                onClick={() => history('/backlogs/'+taskDataState.c_backlog_id_parent)}
+                                                sx={{cursor: 'pointer'}}
+                                            >
+                                                {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id_parent)[0].v_title}
+                                            </Link>
+                                            : ''}
+                                            <Link
+                                                underline="hover"
+                                                color="text.primary"
+                                                onClick={() => history('/backlogs/'+taskDataState.c_backlog_id)}
+                                                aria-current="page"
+                                                sx={{cursor: 'pointer'}}
+                                            >
+                                                {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id)[0].v_title}
+                                            </Link>
+                                        </Breadcrumbs>
                                     </Box>
-                                    <Typography variant="h3" gutterBottom component="div" onClick={handleOnClickTitle}>
-                                        {titleEdit ? 
-                                            <TextField 
-                                                variant="outlined" 
-                                                defaultValue={taskDataState.v_title}  
-                                                value={titleData} 
-                                                onKeyPress={handleOnKeyPressTitle} 
-                                                onBlur={handleOnBlurTitle}
-                                            />
-                                            : taskDataState.v_title
-                                        }
-                                    </Typography>
-                                    <Typography style={{height: '300px'}} onClick={handleOnClickDescription}>
-                                        { descriptionEdit ? 
-                                            <TextField 
-                                                multiline={true} 
-                                                variant="outlined" 
-                                                size={'medium'} 
-                                                defaultValue={taskDataState.v_description}  
-                                                value={descriptionData} 
-                                                onKeyPress={handleOnKeyPressDescription} 
-                                                onBlur={handleOnBlurDescription}
-                                            />
-                                            :taskDataState.v_description
-                                        }
-                                    </Typography>
-                                    <Typography gutterBottom component="div" onClick={handleOnClickAssigne} >
-                                        Assigne : 
-                                        {assigneEdit ? 
-                                        <Select
-                                            id="assigneedit"
-                                            value={taskDataState.c_assignee}
-                                            label="Assigne"
-                                            onChange={handleOnChangeAssigne}
-                                            onBlur={handleOnCloseAssigne}
-                                            sx={{height: '35px', ml: '5px'}}
-                                        >
-                                            {user.map(x => {
-                                                return <MenuItem key={x.c_user_id} value={x.c_user_id} >{x.v_fullname}</MenuItem>
-                                            })}
-                                        </Select>
-                                        : user ? user.filter(y => y.c_user_id === taskDataState.c_assignee)[0]?.v_fullname : taskDataState.c_assignee}
-                                        
-                                    </Typography>
-                                    <Typography gutterBottom component="div" onClick={handleOnClickStoryPoint}>
-                                        Story Point : 
-                                        {storyPointEdit ?
-                                        <Select
-                                            id="storypointedit"
-                                            value={taskDataState.v_story_point}
-                                            label="Story Point"
-                                            onChange={handleOnChangeStoryPoint}
-                                            onBlur={handleOnCloseStory}
-                                            sx={{height: '35px', ml: '5px'}}
-                                        >
-                                            {data.filter(x => x.v_master === 'storypoint').map(x => {
-                                                return <MenuItem key={x.c_value_id} value={x.c_value_id}>{x.v_value}</MenuItem>
-                                            })}
-                                        </Select>
-                                        : taskDataState.v_story_point }
-                                    </Typography>
-                                    <Typography gutterBottom component="div" onClick={handleOnClickProgress}>
-                                        Progress: 
-                                        {progressEdit ? 
-                                        <Select
-                                            id="progressedit"
-                                            value={taskDataState.c_progress_id}
-                                            label="Progress"
-                                            onChange={handleOnChangeProgress}
-                                            onBlur={handleOnCloseProgress}
-                                            sx={{height: '35px', ml: '5px'}}
-                                        >
-                                            {data.filter(x => x.v_master === 'backlogprogress').map(x => {
-                                                return <MenuItem key={x.c_value_id} value={x.c_value_id}>{x.v_value}</MenuItem>
-                                            })}
-                                        </Select>
-                                        : data ? data.filter(y => y.c_value_id === taskDataState.c_progress_id)[0]?.v_value : taskDataState.c_progress_id}
-                                    </Typography>
-                                    <AlertDialog title={"Hapus backlog?"} wording={"Anda Akan menghapus backlog ini beserta dependensinya"} wordingButton={"Delete Backlog"} onClickAction={() => {
-                                        dispatch(backlogSubtaskDeleteData(taskDataState))
-                                        dispatch(backlogGetData())
-                                        handleClose()
-                                        window.location.reload(false);
-                                    }}/>
+                                    <Box sx={{marginBottom: '5px', ml:'5px'}}>
+                                        <Typography variant="h3" gutterBottom  onClick={handleOnClickTitle}>
+                                            {titleEdit ? 
+                                                <TextField 
+                                                    variant="outlined" 
+                                                    defaultValue={taskDataState.v_title}  
+                                                    value={titleData} 
+                                                    onKeyPress={handleOnKeyPressTitle} 
+                                                    onBlur={handleOnBlurTitle}
+                                                />
+                                                : taskDataState.v_title
+                                            }
+                                        </Typography>
+                                        <Typography style={{height: '300px'}} onClick={handleOnClickDescription}>
+                                            { descriptionEdit ? 
+                                                // <TextEditor/>
+                                                <TextField 
+                                                    multiline={true} 
+                                                    variant="outlined" 
+                                                    defaultValue={taskDataState.v_description}  
+                                                    value={descriptionData} 
+                                                    // onKeyPress={handleOnKeyPressDescription} 
+                                                    onBlur={handleOnBlurDescription}
+                                                    minRows={10}
+                                                    maxRows={20}
+                                                    sx={{width: '450px'}}
+                                                />
+                                                :taskDataState.v_description
+                                            }
+                                        </Typography>
+                                        <Typography gutterBottom component="div" onClick={handleOnClickAssigne} >
+                                            Assigne : 
+                                            {assigneEdit ? 
+                                            <Select
+                                                id="assigneedit"
+                                                value={taskDataState.c_assignee}
+                                                label="Assigne"
+                                                onChange={handleOnChangeAssigne}
+                                                onBlur={handleOnCloseAssigne}
+                                                sx={{height: '35px', ml: '5px'}}
+                                            >
+                                                {user.map(x => {
+                                                    return <MenuItem key={x.c_user_id} value={x.c_user_id} >{x.v_fullname}</MenuItem>
+                                                })}
+                                            </Select>
+                                            : user ? user.filter(y => y.c_user_id === taskDataState.c_assignee)[0]?.v_fullname : taskDataState.c_assignee}
+                                            
+                                        </Typography>
+                                        <Typography gutterBottom component="div" onClick={handleOnClickStoryPoint}>
+                                            Story Point : 
+                                            {storyPointEdit ?
+                                            <Select
+                                                id="storypointedit"
+                                                value={taskDataState.v_story_point}
+                                                label="Story Point"
+                                                onChange={handleOnChangeStoryPoint}
+                                                onBlur={handleOnCloseStory}
+                                                sx={{height: '35px', ml: '5px'}}
+                                            >
+                                                {data.filter(x => x.v_master === 'storypoint').map(x => {
+                                                    return <MenuItem key={x.c_value_id} value={x.c_value_id}>{x.v_value}</MenuItem>
+                                                })}
+                                            </Select>
+                                            : taskDataState.v_story_point }
+                                        </Typography>
+                                        <Typography gutterBottom component="div" onClick={handleOnClickProgress}>
+                                            Progress: 
+                                            {progressEdit ? 
+                                            <Select
+                                                id="progressedit"
+                                                value={taskDataState.c_progress_id}
+                                                label="Progress"
+                                                onChange={handleOnChangeProgress}
+                                                onBlur={handleOnCloseProgress}
+                                                sx={{height: '35px', ml: '5px'}}
+                                            >
+                                                {data.filter(x => x.v_master === 'backlogprogress').map(x => {
+                                                    return <MenuItem key={x.c_value_id} value={x.c_value_id}>{x.v_value}</MenuItem>
+                                                })}
+                                            </Select>
+                                            : data ? data.filter(y => y.c_value_id === taskDataState.c_progress_id)[0]?.v_value : taskDataState.c_progress_id}
+                                        </Typography>
+                                        <AlertDialog title={"Hapus backlog?"} wording={"Anda Akan menghapus backlog ini beserta dependensinya"} wordingButton={"Delete Backlog"} onClickAction={() => {
+                                            dispatch(backlogSubtaskDeleteData(taskDataState))
+                                            dispatch(backlogGetData())
+                                            handleClose()
+                                            window.location.reload(false);
+                                        }}/>
+                                    </Box>
                                 </Box>
                             ) : <Typography></Typography>}
                             

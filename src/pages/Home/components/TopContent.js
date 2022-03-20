@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as moment from 'moment';
 import { Box, Grid, Typography } from "@mui/material"
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 
 // import { BoltIconWrap } from "../../../components/Icons";
@@ -12,6 +13,7 @@ import AlertDialog from '../../../components/Dialog';
 import {finishPrompt} from '../wording'
 
 const TopContent = ({timesprint}) => {
+    const history = useNavigate()
     const dispatch = useDispatch()
     const sprintState = useSelector(state => state.sprints)
     useEffect(() => {
@@ -19,9 +21,9 @@ const TopContent = ({timesprint}) => {
     }, [dispatch])
     let activeSprint = sprintState?.result.filter(x => x.is_active === 1)[0]
     activeSprint = activeSprint ? sprintState?.result[0] : activeSprint
-    let finishDate = moment(activeSprint?.d_finish_sprint.substring(0,10), 'YYYY-MM-DD').format('YYYY-MM-DD')
-    const diff = moment().diff(finishDate, 'days')
-
+    console.log({activeSprint});
+    let finishDate = moment(activeSprint?.d_finish_sprint.substring(0,10), 'YYYY-MM-DD')//.format('YYYY-MM-DD')
+    const diff = finishDate.diff(moment(), 'days')//moment().diff(finishDate, 'days')
     const finishDataHandler = () => {
         dispatch(sprintFinishData(activeSprint))
         dispatch(sprintGetData())
@@ -43,7 +45,9 @@ const TopContent = ({timesprint}) => {
             <Grid items xs={6}>
                 <Grid container direction='row' justifyContent="flex-end">
                     <Grid item >
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={() => {
+                            history('/retrospective/'+activeSprint.c_sprint_id)
+                        }}>
                             Retrospective
                         </Button>
                     </Grid>

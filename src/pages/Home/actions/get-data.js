@@ -9,7 +9,7 @@ export const backlogGetDataParentChild = (data) => {
         }))
 
         const sendRequest = async () => {
-            const response = await initRequest(`/backlogs/parent-child`, {
+            const response = await initRequest(`/backlogs/parent-child?c_sprint_id`+data, {
                 method:'get',
                 headers: {
                     authorization: ''

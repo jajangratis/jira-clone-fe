@@ -12,6 +12,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 
 export function HomeIcon(props) {
@@ -25,6 +26,12 @@ export function HomeIcon(props) {
 export function ExpandMoreIconWrap(props) {
   return (
     <ExpandMoreIcon {...props} />
+  );
+}
+
+export function ArrowBackIosNewIconWrap(props) {
+  return (
+    <ArrowBackIosNewIcon {...props} />
   );
 }
 

@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/material';
 
-export default function AlertDialog({
+export default function DialogStateless({
     wording,
     wordingButton,
     variant='outlined',
@@ -16,35 +16,17 @@ export default function AlertDialog({
     isDisable = false,
     openDefault=false,
     showInitButton=undefined,
+    isOpen=false,
+    handleClose
 }) {
-  const [open, setOpen] = React.useState(openDefault);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  
-  const onClickActionAndClose = (event) => {
-    onClickAction()
-    handleClose()
-  }
-
+    const onClickActionAndClose = (event) => {
+        onClickAction()
+        handleClose()
+    }
   return (
     <Box>
-      {
-        showInitButton ?
-          showInitButton
-        : 
-        <Button variant={variant} onClick={handleClickOpen} disabled={isDisable}>
-          {wordingButton}
-        </Button>
-      }
-      
       <Dialog
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
