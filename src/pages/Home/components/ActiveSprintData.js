@@ -65,10 +65,10 @@ const ActiveSprintData = () => {
             // justifyContent="center"
             // alignItems="flex-start"
             // spacing={2}
-            sx={{overflowX: 'scroll', maxHeight:'85vh',}}
+            // sx={{overflowX: 'scroll', maxHeight:'85vh',}}
         >       
             <Box sx={{display: 'flex', }}>
-                {progressMaster.length > 0 && progressMaster.map(x => {
+                {progressMaster?.length > 0 && progressMaster?.map(x => {
                     return (
                         <Tooltip title={`${x.v_description}`} arrow>
                             <Grid items xs={3} key={x.id}  sx={{p: '5px'}}>
@@ -89,8 +89,8 @@ const ActiveSprintData = () => {
                         let data = parentChildData.map(x => x.childData).flat().filter(x => x.c_backlog_id === result.draggableId)[0]
                         if (data !== undefined) {
                             dispatch(backlogEditData(recreateAndReplace(data, 'c_progress_id', result.destination.droppableId)))
-                            dispatch(backlogGetDataParentChild())
                         }
+                        dispatch(backlogGetDataParentChild())
                     }}>
                         <Accordion  style={{ width: '100%',}} key={x.c_backlog_id} defaultExpanded={true} >
                             <AccordionSummary

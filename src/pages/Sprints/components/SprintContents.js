@@ -11,11 +11,13 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
+
 import { BoltIconWrap } from "../../../components/Icons";
 
 import indexClasses from '../index.module.css'
 
 import SingleDataSprintContent from "./SingleDataSprintContent";
+import BoxOverflowY from "../../../components/BoxOverflowY";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -53,8 +55,7 @@ const SprintContents = () => {
     const finishedData = sprint.filter(x => x.is_finish === 1)
 
     return (
-        
-            <Stack spacing={2} sx={{overflowX: 'scroll'}}>
+            <BoxOverflowY>
                 <SingleDataSprintContent handleClose={handleClose} handleOpen={handleOpen} open={open} sprintData={singleData}/>
                 <TextField
                     id="sprint-searchj"
@@ -175,7 +176,7 @@ const SprintContents = () => {
                 ) : <Box>
                         {sprintState.isLoading ? <CircularProgress/> : <Typography>Kosong</Typography>}
                     </Box>}
-            </Stack>
+            </BoxOverflowY>
             
         
     )

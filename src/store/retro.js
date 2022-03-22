@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit' 
+import { createSlice, current } from '@reduxjs/toolkit' 
 const initialState = {
     isLoading: false,
     error: false,
@@ -11,7 +11,6 @@ const retroSlice = createSlice({
     initialState,
     reducers: {
         getData(state, action) {
-            console.log(action.payload.type, {state});
             switch (action.payload.type) {
                 case 'RETRO_DATA_REDUCER_PENDING':
                     state.isLoading = true
@@ -45,7 +44,9 @@ const retroSlice = createSlice({
                 case 'RETRO_ADD_REDUCER_FULFILLED':
                     state.isLoading = false
                     state.error = false
-                    state.result = action.payload?.data.data
+                    let updateState = current(state)
+                    // updateState.result.push(action.payload?.data.data[0])
+                    state.result = [...updateState.result, action.payload?.data.data[0]]
                     break;
             
                 default:

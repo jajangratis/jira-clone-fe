@@ -226,7 +226,7 @@ export default function SingleDataBacklogContents({
                                         <Breadcrumbs aria-label="breadcrumb">
                                             {taskDataState.c_backlog_id_parent ? 
                                             <Link
-                                                underline="hover"
+                                                underline="none"
                                                 color="inherit"
                                                 onClick={() => history('/backlogs/'+taskDataState.c_backlog_id_parent)}
                                                 sx={{cursor: 'pointer'}}
@@ -235,7 +235,7 @@ export default function SingleDataBacklogContents({
                                             </Link>
                                             : ''}
                                             <Link
-                                                underline="hover"
+                                                underline="none"
                                                 color="text.primary"
                                                 onClick={() => history('/backlogs/'+taskDataState.c_backlog_id)}
                                                 aria-current="page"

@@ -9,12 +9,27 @@ import classes from './index.module.css'
 const Login = () => {
     return (
         // <Grid
-        //     container
+        //     container component="main" sx={{ height: '100vh' }}
         // >
-        //     <Grid item xs={8} className={classes.layoutBlueLogin}>
+        //     {/* <Grid item xs={8} className={classes.layoutBlueLogin}>
         //         <Typography className={`${classes.textLogin} centered`} variant="h3">LOGIN</Typography>
-        //     </Grid>
-        //     <Grid item xs={4} className={classes.layoutLogin}>
+        //     </Grid> */}
+        //     <Grid
+        //         item
+        //         xs={false}
+        //         sm={4}
+        //         md={7}
+        //         sx={{
+        //             backgroundImage: 'url(https://source.unsplash.com/random)',
+        //             backgroundRepeat: 'no-repeat',
+        //             backgroundColor: (t) =>
+        //             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+        //             backgroundSize: 'cover',
+        //             backgroundPosition: 'center',
+        //         }}
+        //     />
+        //     <Grid item xs={5} className={classes.layoutLogin}>
+        //         <FormLogin/>
         //     </Grid>
         // </Grid>
         <FormLogin2/>

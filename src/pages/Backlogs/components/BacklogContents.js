@@ -11,6 +11,7 @@ import Accordion from '@mui/material/Accordion';
 import { BoltIconWrap, BookIconWrap, AssignmentIconWrap } from "../../../components/Icons";
 import SingleDataBacklogContents from "./SingleDataBacklogContents";
 import BacklogAdd from "./BacklogAdd";
+import BoxOverflowY from "../../../components/BoxOverflowY";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -46,7 +47,7 @@ const BacklogContents = () => {
     const handleClose = () => setOpen(false);
   
     return (
-        <Box spacing={2} sx={{overflowX: 'scroll', maxHeight:'95vh',}}>
+        <Box spacing={2}  >
             <SingleDataBacklogContents handleClose={handleClose} handleOpen={handleOpen} open={open} taskData={singleData} sprintData={singleDataSprint}/>
             {
                 backlogData.length > 0 ?

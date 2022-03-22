@@ -15,7 +15,7 @@ const NavigationBar = () => {
     ]
     return (
         <Box sx={{
-            backgroundColor: '#5C7AEA',
+            backgroundColor: 'primary.main',
             height: '100vh',
         }}>
             {navList.map(nav => {
@@ -36,7 +36,7 @@ const NavigationBar = () => {
                                 width: '100%',
                                 height: '40%',
                                 '&:hover': {
-                                    backgroundColor: 'primary.main',
+                                    backgroundColor: '#222E61',
                                 },
                             }}
                         >

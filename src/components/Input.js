@@ -8,6 +8,7 @@ import moment from 'moment'
 // import Styles from './styles';
 
 import { useState } from 'react';
+import { Box } from '@mui/material';
 
 export const InputText = ({
     field,
@@ -62,7 +63,7 @@ export const InputPassword = ({
     // const classes = Styles.InputStyles();
     label = label.charAt(0).toUpperCase() + label.slice(1);
     return (
-        <div >
+        <Box >
 
             <TextField
                 {...field}
@@ -70,8 +71,9 @@ export const InputPassword = ({
                 type='password'
                 autoComplete="current-password"
                 variant="standard"
+                fullWidth={true}
             />
-        </div>
+        </Box>
         
     )
 }

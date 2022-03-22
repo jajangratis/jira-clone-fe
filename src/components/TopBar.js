@@ -10,7 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled, alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import mainClasses from './styles'
 import { logoutAction } from '../pages/Login/actions/auth-actions';
 import { ArrowBackIosNewIconWrap } from './Icons';
 
@@ -69,16 +68,17 @@ const TopBar = () => {
   const handleClose = (event) => {
       setShowMenu(false);
   };
-  const handleLogout = async (event) => {
-      setShowMenu(false);
-      await dispatch(logoutAction())
-      history('/login')
+  const handleLogout = (event) => {
+    setShowMenu(false);
+    history('/login')
+    dispatch(logoutAction())
   };
   return (
       <Box sx={{
         width: '100%',
         display: 'flex',
-        borderBottom: '1px solid black'
+        borderBottom: '1px solid black',
+        mb: '5px'
       }}>
         <Box>
             <IconButton onClick={() => {

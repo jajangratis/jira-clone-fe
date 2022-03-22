@@ -4,7 +4,7 @@ import { backlogTasksActions } from '../../../store/backlogTasks'
 // THUNK
 export const backlogSubtaskDeleteData = (data) => {
     return async (dispatch) => {
-        dispatch(backlogTasksActions.editSubTask({
+        dispatch(backlogTasksActions.deleteSubTask({
             type: 'BACKLOG_TASK_SUBTASK_DELETE_REDUCER_PENDING',
         }))
 
@@ -20,12 +20,12 @@ export const backlogSubtaskDeleteData = (data) => {
         }
         try {
             let response = await sendRequest()
-            dispatch(backlogTasksActions.editSubTask({
+            dispatch(backlogTasksActions.deleteSubTask({
                 type: 'BACKLOG_TASK_SUBTASK_DELETE_REDUCER_FULFILLED',
             }))
         } catch (error) {
             console.log({error});
-            dispatch(backlogTasksActions.editSubTask({
+            dispatch(backlogTasksActions.deleteSubTask({
                 type: 'BACKLOG_TASK_SUBTASK_DELETE_REDUCER_REJECTED'
             }))
         }

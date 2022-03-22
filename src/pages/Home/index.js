@@ -8,6 +8,8 @@ import NavigationBar from "../../components/NavigationBar"
 import TopBar from "../../components/TopBar"
 import ActiveSprintData from "./components/ActiveSprintData"
 import TopContent from "./components/TopContent"
+import BoxOverflowY from '../../components/BoxOverflowY';
+
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -26,7 +28,12 @@ const Home = () => {
                 <NavigationBar/>
             </Grid>
             <Grid item xs={11}>
-                <Grid container direction='column'>
+                <BoxOverflowY>
+                    <TopBar/>
+                    <TopContent/>
+                    <ActiveSprintData/>
+                </BoxOverflowY>
+                {/* <Grid container direction='column'>
                     <TopBar/>
                     <TopContent/>
                     
@@ -35,7 +42,7 @@ const Home = () => {
                             <ActiveSprintData/>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </Grid>
         </Grid>
     )

@@ -20,14 +20,14 @@ const TopContent = ({timesprint}) => {
         dispatch(sprintGetData())
     }, [dispatch])
     let activeSprint = sprintState?.result.filter(x => x.is_active === 1)[0]
-    activeSprint = activeSprint ? sprintState?.result[0] : activeSprint
-    console.log({activeSprint});
+    activeSprint = activeSprint ?  activeSprint : sprintState?.result[0]
     let finishDate = moment(activeSprint?.d_finish_sprint.substring(0,10), 'YYYY-MM-DD')//.format('YYYY-MM-DD')
     const diff = finishDate.diff(moment(), 'days')//moment().diff(finishDate, 'days')
     const finishDataHandler = () => {
         dispatch(sprintFinishData(activeSprint))
         dispatch(sprintGetData())
     }
+    console.log(sprintState?.result, {activeSprint});
     return (
         <Grid container direction='row' sx={{mt: '1em', mb: '1em'}} >
             <Grid item xs={6}>

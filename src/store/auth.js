@@ -4,6 +4,7 @@ const initialAuthState = {
     isLoading: false,
     error: false,
     result: {
+        msg:'',
         status:'',
         success: false,
         data: '',
@@ -42,6 +43,7 @@ const authSlice = createSlice({
                     state.result = action.payload?.data.data
                     state.token = action.payload?.data.data.token
                     state.expired = action.payload?.data.data.expired
+                    state.msg = action.payload?.data.msg
                     state.isAuthenticated = true
                     localStorage.setItem('auth', JSON.stringify({
                         isAuthenticated: state.isAuthenticated,
@@ -71,6 +73,7 @@ const authSlice = createSlice({
                     localStorage.removeItem('auth')
                     state.isLoading = false
                     state.error = false
+                    state.msg = null
                     break;
                 default:
                     break;

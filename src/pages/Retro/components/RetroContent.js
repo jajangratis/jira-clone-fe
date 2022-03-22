@@ -8,6 +8,9 @@ import { retroAddData } from '../actions/add-data'
 import { DeleteIconWrap, ModeEditIconWrap } from "../../../components/Icons";
 import DialogStateless from "../../../components/Dialog2";
 import { retroDeleteData } from "../actions/delete-data";
+import { retroEditData } from "../actions/edit-data";
+import BoxOverflowY from "../../../components/BoxOverflowY";
+
 
 
 
@@ -22,6 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const RetroContent = () => {
     const {c_sprint_id} = useParams()
     const masterState = useSelector(state => state.master)
+    const authState = useSelector(state => state.auth)
     const {data, user} = masterState.result
     const retroStatus = data.filter(x => x.v_master === 'retrostatus')
     const dispatch = useDispatch()
@@ -31,22 +35,43 @@ const RetroContent = () => {
     const [retroData, setRetroData] = useState()
     const [dataWillDelete, setDataWillDelete] = useState()
     const [openDialogDelete, setOpenDialogDelete] = useState(false)
+    const [isEdit, setIsEdit] = useState()
 
     useEffect(() => {
         dispatch(retroGetData(c_sprint_id))
     }, [c_sprint_id, dispatch])
-    
+
     useEffect(() => {
         setRetroData(retroState.result)
     },[retroState.result])
 
 
-
     const handleCloseDialogDelete = () => {
         setOpenDialogDelete(false)
     }
+
+    useEffect(() => {
+        retroData?.map(z => {
+            setIsEdit((prev) => {
+                if (prev === undefined) {
+                    let x = {}
+                    x[z.c_retro_id] = false
+                    return x
+                } else {
+                    let newPrev = JSON.parse(JSON.stringify(prev))
+                    newPrev[z.c_retro_id] = false
+                    return newPrev
+                }
+            })
+            return z
+        })
+    }, [retroData])
+
+
+    const logged = user?.filter(x => x.v_email === authState.result.email)[0]
     return (
-        <Box sx={{overflowX: 'scroll', maxHeight:'85vh',}}>
+        <BoxOverflowY>
+        {/* <Box sx={{overflowX: 'scroll', maxHeight:'85vh',}}> */}
             {/* delete dialog */}
             <DialogStateless
                 wording={"Data yang akan dihapus tidak bisa dikembalikan"}
@@ -79,34 +104,68 @@ const RetroContent = () => {
                                             setDataState()
                                             dispatch(retroAddData(data))
                                             dispatch(retroGetData(c_sprint_id))
-                                            alert('added')
                                         }
                                     }
                                 }}/>
                                 <Grid container direction="column">
-                                    {(retroState.result?.filter(y => y.c_retro_status === x.c_value_id).map(z => {
+                                    {(retroData?.filter(y => y.c_retro_status === x.c_value_id).map(z => {
                                         return (
                                             <Grid items sx={{ my: '5px'}}>
-                                                <Item>
-                                                    <Box>
-                                                        <Typography>{z.v_value}</Typography>
-                                                    </Box>
-                                                    <Box sx={{p: '5px', mt: '15px', mx: '0px'}}>
-                                                        <Grid container>
-                                                            <Grid items xs={6} sx={{textAlign: 'left', mt:'10px', mx: '0px'}}>
-                                                                <IconButton ><ModeEditIconWrap sx={{fontSize: '15px', '&:hover': {color: 'primary.main', fontSize: '18px'}}}/></IconButton>
-                                                                <IconButton onClick={() => {
-                                                                    setDataWillDelete(z)
-                                                                    setOpenDialogDelete(true)
-                                                                }}><DeleteIconWrap sx={{fontSize: '15px', '&:hover': {color: 'error.main', fontSize: '18px'}}}/></IconButton>
-                                                                
-                                                            </Grid>
-                                                            <Grid items xs={6} sx={{textAlign: 'right', mt:'15px'}}>
-                                                                <Typography>{user.filter(x => x.c_user_id === z.c_user_id)[0]?.v_fullname}</Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </Box>
-                                                </Item>
+                                                    {isEdit!== undefined ? (isEdit[z.c_retro_id] && (logged.c_user_id === z.c_user_id)) ?
+                                                        <TextField margin="normal" fullWidth='true'  placeholder={z.v_value} inputProps={'ariaLabel'} onKeyPress={(event) => {
+                                                            if(event.key === 'Enter'){
+                                                                if (event.target.value !== undefined) {
+                                                                    const data = {
+                                                                        c_retro_id: z.c_retro_id,
+                                                                        v_value: event.target.value,
+                                                                        c_retro_status: x.c_value_id,
+                                                                        c_sprint_id,
+                                                                    }
+                                                                    setDataState()
+                                                                    dispatch(retroEditData(data))
+                                                                    setRetroData((x) => {
+                                                                        let newValue = JSON.parse(JSON.stringify(x))
+                                                                        newValue = newValue.map(y => {
+                                                                            if (y.c_retro_id === data.c_retro_id) {
+                                                                                y.v_value = data.v_value
+                                                                            }
+                                                                            return y
+                                                                        })
+                                                                        return newValue
+                                                                    })
+                                                                }
+                                                            }
+                                                        }}/>
+                                                    :
+                                                        <Item key={z.c_retro_id}>
+                                                            <Box>
+                                                                <Typography>{z.v_value}</Typography>
+                                                            </Box>
+                                                            <Box sx={{p: '5px', mt: '15px', mx: '0px'}}>
+                                                                <Grid container>
+                                                                    <Grid items xs={6} sx={{textAlign: 'left', mt:'10px', mx: '0px'}}>
+                                                                        <IconButton onClick={()=>{
+                                                                            if (logged.c_user_id === z.c_user_id) {
+                                                                                setIsEdit((x) => {
+                                                                                    let newData = JSON.parse(JSON.stringify(x));
+                                                                                    newData[z.c_retro_id] = true
+                                                                                    return newData
+                                                                                })
+                                                                            }
+                                                                        }}><ModeEditIconWrap sx={{fontSize: '15px', '&:hover': {color: 'primary.main', fontSize: '18px'}}}/></IconButton>
+                                                                        <IconButton onClick={() => {
+                                                                            setDataWillDelete(z)
+                                                                            setOpenDialogDelete(true)
+                                                                        }}><DeleteIconWrap sx={{fontSize: '15px', '&:hover': {color: 'error.main', fontSize: '18px'}}}/></IconButton>
+                                                                        
+                                                                    </Grid>
+                                                                    <Grid items xs={6} sx={{textAlign: 'right', mt:'15px'}}>
+                                                                        <Typography>{user?.filter(x => x.c_user_id === z.c_user_id)[0]?.v_fullname}</Typography>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Box>
+                                                        </Item>
+                                                    :''}
                                             </Grid>
                                         )
                                     }))}
@@ -116,7 +175,8 @@ const RetroContent = () => {
                     })
                 }
             </Grid>
-        </Box>
+        {/* </Box> */}
+        </BoxOverflowY>
     )
 }
 
