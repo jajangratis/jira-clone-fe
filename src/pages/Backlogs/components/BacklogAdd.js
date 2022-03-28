@@ -21,6 +21,7 @@ const BacklogAdd = ({
     const [isNewSub, setIsAddNewSub] = useState(false)
     const masterState = useSelector(state => state.master)
     const {data, user} = masterState.result
+    const [isShow, setIsShow] = useState(false)
     const onFinishedAddNewSubHandler = (event) => {
         if(event.key === 'Enter'){
             dispatch(backlogSubtaskAddData({
@@ -44,6 +45,7 @@ const BacklogAdd = ({
             v_story_point:newStoryPoint
         }))
         setIsAddNewSub(false)
+        setIsShow(false)
     }
     const handleChangeNewAssigne = (event) => {
         setNewAssigne(event.target.value);
@@ -51,17 +53,22 @@ const BacklogAdd = ({
     const handleChangeNewStoryPoint = (event) => {
         setNewStoryPoint(event.target.value);
     };
+    const handleShow = () => {
+        setIsShow(true)
+    }
     return (
-        <Box>
-            <Grid container direction='row' alignItems="center" style={{border: '1px solid', marginTop: '5px'}}>
-                <Grid items xs={12}>
-                    <TextField  variant="standard" onKeyPress={onFinishedAddNewSubHandler} sx={{width: '100%'}} />
-                </Grid>
-                <Box items xs={12} >
+        isShow ? 
+            <Box sx={{display: 'flex', mt: '15px'}}>
+                <Box sx={{width: '90%'}}>
+                    <TextField  variant="standard" onKeyPress={onFinishedAddNewSubHandler} sx={{width: '100%', mt: '12px'}} />
+                </Box>
+                <Box sx={{width: '20%', display: 'flex'}}>
                     <Select
                         value={newAssigne}
                         label="Assigne"
                         onChange={handleChangeNewAssigne}
+                        fullWidth={true}
+                        sx={{width: '200px', height: '45px'}}
                     >
                         {user.map(x => {
                             return <MenuItem value={x.c_user_id} key={x.id}>{x.v_fullname}</MenuItem>
@@ -71,15 +78,26 @@ const BacklogAdd = ({
                         value={newStoryPoint}
                         label="Story Point"
                         onChange={handleChangeNewStoryPoint}
+                        fullWidth={true}
+                        sx={{width: '200px', height: '45px'}}
                     >
                         {data.filter(x => x.v_master === 'storypoint').map(x => {
                             return <MenuItem value={x.c_value_id} key={x.id}>{x.v_value}</MenuItem>
                         })}
                     </Select>
-                    <Button onClick={onClickButton}>OK</Button>
                 </Box>
-            </Grid>
-        </Box>
+                <Box sx={{width: '5%'}}>
+                    <Button onClick={onClickButton} sx={{width: '10px', height: '45px'}}>OK</Button>
+                </Box>
+            </Box>
+        : 
+            <Box 
+                display="flex" 
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Button onClick={handleShow} sx={{width: '20px'}}>Add</Button>
+            </Box>
     )
 }
 

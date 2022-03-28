@@ -85,13 +85,33 @@ const ActiveSprintData = () => {
             {parentChildData !== undefined && parentChildData.map(x => {
                 return (
                     <DragDropContext 
-                    onDragEnd={(result) => {
-                        let data = parentChildData.map(x => x.childData).flat().filter(x => x.c_backlog_id === result.draggableId)[0]
-                        if (data !== undefined) {
-                            dispatch(backlogEditData(recreateAndReplace(data, 'c_progress_id', result.destination.droppableId)))
-                        }
-                        dispatch(backlogGetDataParentChild())
-                    }}>
+                        onDragEnd={(result) => {
+                            console.log({result});
+                            let data = parentChildData.map(x => x.childData).flat().filter(x => x.c_backlog_id === result.draggableId)[0]
+                            if (data !== undefined) {
+                                dispatch(backlogEditData(recreateAndReplace(data, 'c_progress_id', result.destination.droppableId)))
+                            }
+                            let newDataArray = JSON.parse(JSON.stringify(parentChildData))
+                            newDataArray = newDataArray.map(x => {
+                                if (x.c_backlog_id === result.draggableId) {
+                                    x.c_progress_id = result.destination.droppableId
+                                } else {
+                                    if (x.childData.map(z => z.c_backlog_id).includes(result.draggableId)) {
+                                        x.childData.map(y => {
+                                            if (y.c_backlog_id === result.draggableId) {
+                                                y.c_progress_id = result.destination.droppableId
+                                            } 
+                                            return y
+                                        })
+                                    }
+                                    
+                                }
+                                return x
+                            })
+                            // dispatch(backlogGetDataParentChild())
+                            setParentChildData(newDataArray)
+                        }}
+                    >
                         <Accordion  style={{ width: '100%',}} key={x.c_backlog_id} defaultExpanded={true} >
                             <AccordionSummary
                                 aria-controls={`'panel-content'${x.c_backlog_id}`}
@@ -110,7 +130,7 @@ const ActiveSprintData = () => {
                                                         return (
                                                         <Draggable key={id} draggableId={c_backlog_id} index={index}>
                                                             {(provided) => (
-                                                            <ListItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onClick={() => history('/backlogs/'+c_backlog_id)} sx={{p: '5px'}}>
+                                                            <ListItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onClick={() => history('/backlogs/'+c_backlog_id)} sx={{p: '5px',  transition: '.1s ease',}} >
                                                                 <Item style={itemStyle} >
                                                                     <Grid
                                                                         container

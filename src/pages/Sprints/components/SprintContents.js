@@ -9,6 +9,8 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 
 
@@ -25,6 +27,35 @@ const Item = styled(Paper)(({ theme }) => ({
     // textAlign: 'center',
     color: theme.palette.text.secondary,
 }));
+
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+}
+  
+  
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
 
 const SprintContents = () => {
     const sprintState = useSelector(state => state.sprints)
@@ -54,6 +85,12 @@ const SprintContents = () => {
     const planningData = sprint.filter(x => x.is_finish === 0 && x.is_active === 0)
     const finishedData = sprint.filter(x => x.is_finish === 1)
 
+    
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
             <BoxOverflowY>
                 <SingleDataSprintContent handleClose={handleClose} handleOpen={handleOpen} open={open} sprintData={singleData}/>
@@ -65,6 +102,7 @@ const SprintContents = () => {
                     margin="normal"
                     onChange={handleSearch}
                     onEmptied={handleResetSearch}
+                    fullWidth={true}
                 />
                 {/* <Grid
                     container
@@ -75,11 +113,16 @@ const SprintContents = () => {
                 </Grid> */}
                 {sprint.length > 0 ? (
                     <Box>
-                        <Grid items xs={12} spacing={2}>
-                            <Typography gutterBottom variant="h6" component="div">
-                                Active Sprint
-                            </Typography>
-                            <Stack spacing={2} >
+                        <Box sx={{ width: '100%' }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{ml: '5px'}}>
+                                    <Tab label="Active Sprint" {...a11yProps(0)} sx={{width: `${100/3}%`}}/>
+                                    <Tab label="Plan Sprint" {...a11yProps(1)} sx={{width: `${100/3}%`}}/>
+                                    <Tab label="Finish Sprint" {...a11yProps(2)} sx={{width: `${100/3}%`}}/>
+                                </Tabs>
+                            </Box>
+                        <TabPanel value={value} index={0}>
+                        <Stack spacing={2} >
                                 {activeData.length > 0 && activeData.map(x => {
                                     let startDate = x.d_start_sprint ? x.d_start_sprint.split('T'):['']
                                     let endDate = x.d_finish_sprint ? x.d_finish_sprint.split('T'):['']
@@ -97,7 +140,6 @@ const SprintContents = () => {
                                                 </Typography>
                                             </Grid>
                                             <Grid items xs={9} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                                
                                                 <Typography>
                                                     Duration {startDate[0]} - {endDate[0]}
                                                 </Typography>
@@ -106,12 +148,8 @@ const SprintContents = () => {
                                     </Item>
                                 })}
                             </Stack>
-                            <Divider/>
-                        </Grid>
-                        <Grid items xs={12}>
-                            <Typography gutterBottom variant="h6" component="div">
-                                Plan Sprint
-                            </Typography>
+                        </TabPanel>
+                        <TabPanel value={value} index={1}>
                             <Stack spacing={2}>
                                 {planningData.length > 0 && planningData.map(x => {
                                     let startDate = x.d_start_sprint ? x.d_start_sprint.split('T'):['']
@@ -138,12 +176,8 @@ const SprintContents = () => {
                                     </Item>
                                 })}
                             </Stack>
-                            <Divider/>
-                        </Grid>
-                        <Grid items xs={12}>
-                            <Typography gutterBottom variant="h6" component="div">
-                                Finished Sprint
-                            </Typography>
+                        </TabPanel>
+                        <TabPanel value={value} index={2}>
                             <Stack spacing={2}>
                                 {finishedData.length > 0 && finishedData.map(x => {
                                     let startDate = x.d_start_sprint ? x.d_start_sprint.split('T'):['']
@@ -171,7 +205,8 @@ const SprintContents = () => {
                                     </Item>
                                 })}
                             </Stack>
-                        </Grid>
+                        </TabPanel>
+                        </Box>
                     </Box>
                 ) : <Box>
                         {sprintState.isLoading ? <CircularProgress/> : <Typography>Kosong</Typography>}

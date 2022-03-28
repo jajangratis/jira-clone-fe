@@ -3,15 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { backlogGetData } from "../actions/get-data"
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { Box, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from '@mui/material/Accordion';
-import { BoltIconWrap, BookIconWrap, AssignmentIconWrap } from "../../../components/Icons";
+import { BoltIconWrap, AssignmentIconWrap } from "../../../components/Icons";
 import SingleDataBacklogContents from "./SingleDataBacklogContents";
 import BacklogAdd from "./BacklogAdd";
-import BoxOverflowY from "../../../components/BoxOverflowY";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -32,7 +31,6 @@ const BacklogContents = () => {
     const [open, setOpen] = useState(false);
     const [singleData, setSingleData] = useState()
     const [singleDataSprint, setSingleDataSprint] = useState()
-    const [isNewSub, setIsAddNewSub] = useState(backlogData.map(x => x.c_sprint_id).reduce((a, v) => ({ ...a, [v]: false}), {}) )
     
     useEffect(() => {
         dispatch(backlogGetData())
@@ -40,7 +38,6 @@ const BacklogContents = () => {
     }, [])
     useEffect(() => {
         setbacklog(backlogData)
-        setIsAddNewSub(backlogData.map(x => x.c_sprint_id).reduce((a, v) => ({ ...a, [v]: false}), {}) )
     }, [backlogData])
 
     const handleOpen = () => setOpen(true);
@@ -50,6 +47,11 @@ const BacklogContents = () => {
         <Box spacing={2}  >
             <SingleDataBacklogContents handleClose={handleClose} handleOpen={handleOpen} open={open} taskData={singleData} sprintData={singleDataSprint}/>
             {
+                backlogState.isLoading ? 
+                    <Box height={80} sx={{top: '50%', left: '50%'}}>
+                        <CircularProgress/>
+                    </Box> 
+                :
                 backlogData.length > 0 ?
                     backlogData.map(backlog => 
                         <Accordion  style={{ width: '100%', backgroundColor: '#F4F5F7' }} key={backlog.c_backlog_id} defaultExpanded={true}>
@@ -85,38 +87,31 @@ const BacklogContents = () => {
                                                 }}
                                                 sx={{
                                                     mb: '5px',
+                                                    border: '1px solid black',
+                                                    display: 'flex',
                                                 }}
                                             
                                             >
-                                                <Grid container direction='row'  style={{backgroundColor: 'white', border: '0.5px solid'}}>
-                                                    <Grid items xs={2} sx={{ml: '5px'}}>
-                                                        <Box sx={{display: 'flex', mt: '5px'}}>
-                                                            <AssignmentIconWrap color="success" sx={{ fontSize:'20px'}}/>
-                                                            <Typography>{x.v_title} ({x.v_story_point})</Typography>
-                                                        </Box>
-                                                    </Grid>
-                                                    <Grid items xs={9} sx={{textAlign: 'right', ml: '90px'}}>
-                                                        <Typography>{user ? user.filter(y => y.c_user_id === x.c_assignee)[0]?.v_fullname : x.c_assignee}</Typography>
-                                                    </Grid>
-                                                </Grid>
+                                                <Box sx={{display: 'flex', mt: '5px', width: '85%'}}>
+                                                    <AssignmentIconWrap color="success" sx={{ fontSize:'20px'}}/>
+                                                    <Typography>{x.v_title}</Typography>
+                                                </Box>
+                                                <Box sx={{mt: '5px', pl: '25px',display: 'flex', width: '15%'}}>
+                                                    <Typography>({x.v_story_point})</Typography>
+                                                    <Typography>{user ? user.filter(y => y.c_user_id === x.c_assignee)[0]?.v_fullname : x.c_assignee}</Typography>
+                                                </Box>
                                             </Box>
                                         )
                                     )
                                 : ''}
-                                {/* {isNewSub[backlog.c_sprint_id] ?  <BacklogAdd sprintData={backlog} taskData={singleData}/> : <Typography className={`centered`} onClick={() => {
-                                    setIsAddNewSub((prev, curr) => {
-                                        let newPrev = prev
-                                        newPrev[backlog.c_sprint_id] = true
-                                        console.log({prev, newPrev, curr}, backlog.c_sprint_id);
-                                        return newPrev
-                                    })
-                                    console.log({UU: isNewSub}, isNewSub[backlog.c_sprint_id]);
-                                }}>Add Backlog</Typography>} */}
                                 <BacklogAdd sprintData={backlog} taskData={singleData}/>
                             </AccordionDetails>
                         </Accordion>
-                    )
-                : <p>Empty</p>
+                )
+                : 
+                <Box sx={{top: '50%', left: '50%'}}>
+                    <Typography>Empty</Typography>
+                </Box> 
             }
             
         </Box>

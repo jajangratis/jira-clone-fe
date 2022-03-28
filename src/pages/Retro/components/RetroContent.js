@@ -143,22 +143,22 @@ const RetroContent = () => {
                                                             </Box>
                                                             <Box sx={{p: '5px', mt: '15px', mx: '0px'}}>
                                                                 <Grid container>
-                                                                    <Grid items xs={6} sx={{textAlign: 'left', mt:'10px', mx: '0px'}}>
-                                                                        <IconButton onClick={()=>{
-                                                                            if (logged.c_user_id === z.c_user_id) {
+                                                                    {logged.c_user_id === z.c_user_id ?
+                                                                        <Grid items xs={6} sx={{textAlign: 'left', mt:'10px', mx: '0px'}}>
+                                                                            <IconButton onClick={()=>{
                                                                                 setIsEdit((x) => {
                                                                                     let newData = JSON.parse(JSON.stringify(x));
                                                                                     newData[z.c_retro_id] = true
                                                                                     return newData
                                                                                 })
-                                                                            }
-                                                                        }}><ModeEditIconWrap sx={{fontSize: '15px', '&:hover': {color: 'primary.main', fontSize: '18px'}}}/></IconButton>
-                                                                        <IconButton onClick={() => {
-                                                                            setDataWillDelete(z)
-                                                                            setOpenDialogDelete(true)
-                                                                        }}><DeleteIconWrap sx={{fontSize: '15px', '&:hover': {color: 'error.main', fontSize: '18px'}}}/></IconButton>
-                                                                        
-                                                                    </Grid>
+                                                                            }}><ModeEditIconWrap sx={{fontSize: '15px', '&:hover': {color: 'primary.main', fontSize: '18px'}}}/></IconButton>
+                                                                            <IconButton onClick={() => {
+                                                                                setDataWillDelete(z)
+                                                                                setOpenDialogDelete(true)
+                                                                            }}><DeleteIconWrap sx={{fontSize: '15px', '&:hover': {color: 'error.main', fontSize: '18px'}}}/></IconButton>
+                                                                            
+                                                                        </Grid>
+                                                                    : <Grid items xs={6} sx={{textAlign: 'left', mt:'10px', mx: '0px'}}></Grid>}
                                                                     <Grid items xs={6} sx={{textAlign: 'right', mt:'15px'}}>
                                                                         <Typography>{user?.filter(x => x.c_user_id === z.c_user_id)[0]?.v_fullname}</Typography>
                                                                     </Grid>
