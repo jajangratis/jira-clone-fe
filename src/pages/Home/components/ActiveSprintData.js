@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { Grid, Box, IconButton, Button } from "@mui/material";
+import { Grid, Box, IconButton, Button, Avatar } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -21,9 +21,6 @@ import { backlogEditData } from '../actions/edit-backlog';
 import { recreateAndReplace } from '../../../helper/recreate-reassign-object';
 import { AssignmentIconWrap, TaskIconWrap, ExpandMoreIconWrap } from '../../../components/Icons';
 import { sprintGetData } from '../../Sprints/actions/get-data';
-
-
-
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -127,10 +124,11 @@ const ActiveSprintData = () => {
                                                 {(provided) => (
                                                     <List className={`${progress.c_value_id}list`} {...provided.droppableProps} ref={provided.innerRef} >
                                                     {x.childData.length > 0 && x.childData?.filter(x => x.c_progress_id === progress.c_value_id)?.map(({id, c_backlog_id, v_title, c_assignee, v_story_point}, index) => {
+                                                        const assigneeUser = user ? user.filter(y => y.c_user_id === c_assignee)[0]?.v_fullname : c_assignee
                                                         return (
                                                         <Draggable key={id} draggableId={c_backlog_id} index={index}>
                                                             {(provided) => (
-                                                            <ListItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onClick={() => history('/backlogs/'+c_backlog_id)} sx={{p: '5px',  transition: '.1s ease',}} >
+                                                            <ListItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onClick={() => history(`/backlogs/${c_backlog_id}?c_sprint_id=${activeSprint?.c_sprint_id}`)} sx={{p: '5px',  transition: '.1s ease',}} >
                                                                 <Item style={itemStyle} >
                                                                     <Grid
                                                                         container
@@ -144,8 +142,8 @@ const ActiveSprintData = () => {
                                                                                 direction="row"
                                                                                 sx={{ textAlign:'left', ml: '5px'}}
                                                                             >
-                                                                                <Grid items xs={6}><Typography>{`BG-`+id}</Typography></Grid>
-                                                                                <Grid items xs={6} sx={{ textAlign:'right', pr: '5px'}}><Typography>{user ? user.filter(y => y.c_user_id === c_assignee)[0]?.v_fullname : c_assignee}</Typography></Grid>
+                                                                                <Grid items xs={10}><Typography>{`BG-`+id}</Typography></Grid>
+                                                                                <Grid items xs={2} sx={{ textAlign:'right'}}>{assigneeUser ? <Avatar sx={{width: '20px', height: '20px', fontSize: '10px'}}>{`${assigneeUser[0]}${assigneeUser[assigneeUser.length-1]}`}</Avatar> : ""}</Grid>
                                                                             </Grid>
                                                                         </Grid>
                                                                     </Grid>  

@@ -37,13 +37,24 @@ export default function SingleDataBacklogContents({
     sprintData,
     fullscreen = false,
 }) {
-    const style = {
+    const style = fullscreen ? {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 900,
-        height:600,
+        height:700,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 29,
+        p: 4,
+    } : {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 900,
+        height:700,
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
@@ -65,8 +76,14 @@ export default function SingleDataBacklogContents({
     const [progressEdit, setProgressEdit] = useState(false)
     const [titleEdit, setTitleEdit] = useState(false)
     const [descriptionEdit, setDescriptionEdit] = useState(false)
+    const [weblinkEdit, setWeblinkEdit] = useState(false)
+    const [designLinkEdit, setDesignLinkEdit] = useState(false)
+    const [repoLinkEdit, setRepoLinkEdit] = useState(false)
     const [titleData, setTitleData] = useState(taskDataState?.v_title)
     const [descriptionData, setDescriptionData] = useState(taskDataState?.v_description)
+    const [weblinkData, setWeblinkData] = useState(taskDataState?.v_web_link)
+    const [designLinkData, setDesignLinkData] = useState(taskDataState?.v_design_link)
+    const [repoLinkData, setRepoLinkData] = useState(taskDataState?.v_repo_link)
     
 
     useEffect(() => {
@@ -177,18 +194,6 @@ export default function SingleDataBacklogContents({
     const handleOnClickDescription = () => {
         setDescriptionEdit(true)
     }
-    // const handleOnKeyPressDescription = (event) => {
-    //     if(event.key === 'Enter'){
-    //         if (event.target.value !== undefined) {
-    //             setDescriptionData(event.target.value)
-    //             setTaskDataState((prevState, props) => {
-    //                 dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_description', event.target.value)))
-    //                 return recreateAndReplace(prevState, 'v_description', event.target.value)
-    //             })
-    //             setDescriptionEdit(false)
-    //         }
-    //     }
-    // }
     const handleOnBlurDescription = (event) => {
         if (event.target.value !== undefined) {
             setDescriptionData(event.target.value)
@@ -198,6 +203,51 @@ export default function SingleDataBacklogContents({
                 
             })
             setDescriptionEdit(false)
+        }
+    }
+    // HANDLE Weblink
+    const handleOnClickWeblink = () => {
+        setWeblinkEdit(true)
+    }
+    const handleOnBlurWeblink = (event) => {
+        if (event.target.value !== undefined) {
+            setWeblinkData(event.target.value)
+            setTaskDataState((prevState, props) => {
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_web_link', event.target.value)))
+                return recreateAndReplace(prevState, 'v_web_link', event.target.value)
+                
+            })
+            setWeblinkEdit(false)
+        }
+    }
+    // HANDLE DESING LINK
+    const handleOnClickDesignLink = () => {
+        setDesignLinkEdit(true)
+    }
+    const handleOnBlurDesignLink = (event) => {
+        if (event.target.value !== undefined) {
+            setDesignLinkData(event.target.value)
+            setTaskDataState((prevState, props) => {
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_web_link', event.target.value)))
+                return recreateAndReplace(prevState, 'v_web_link', event.target.value)
+                
+            })
+            setDesignLinkEdit(false)
+        }
+    }
+    // HANDLE REPO LINK
+    const handleOnClickRepoLink = () => {
+        setRepoLinkEdit(true)
+    }
+    const handleOnBlurRepoLink = (event) => {
+        if (event.target.value !== undefined) {
+            setRepoLinkData(event.target.value)
+            setTaskDataState((prevState, props) => {
+                dispatch(backlogSubtaskEditData(recreateAndReplace(prevState, 'v_repo_link', event.target.value)))
+                return recreateAndReplace(prevState, 'v_repo_link', event.target.value)
+                
+            })
+            setRepoLinkEdit(false)
         }
     }
     return (
@@ -228,37 +278,40 @@ export default function SingleDataBacklogContents({
                                             <Link
                                                 underline="none"
                                                 color="inherit"
-                                                onClick={() => history('/backlogs/'+taskDataState.c_backlog_id_parent)}
+                                                onClick={() => history(`/backlogs/${taskDataState.c_backlog_id_parent}?c_sprint_id=${sprintData.c_sprint_id ? sprintData.c_sprint_id : sprintData}`)}
                                                 sx={{cursor: 'pointer'}}
                                             >
-                                                {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id_parent)[0].v_title}
+                                                BG-{backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id_parent)[0].id}
                                             </Link>
                                             : ''}
                                             <Link
                                                 underline="none"
                                                 color="text.primary"
-                                                onClick={() => history('/backlogs/'+taskDataState.c_backlog_id)}
+                                                onClick={() => history(`/backlogs/${taskDataState.c_backlog_id}?c_sprint_id=${sprintData.c_sprint_id ? sprintData.c_sprint_id : sprintData}`)}
                                                 aria-current="page"
                                                 sx={{cursor: 'pointer'}}
                                             >
-                                                {backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id)[0].v_title}
+                                                BG-{backlogsDetailData.filter(x => x.c_backlog_id === taskDataState.c_backlog_id)[0].id}
                                             </Link>
                                         </Breadcrumbs>
                                     </Box>
-                                    <Box sx={{marginBottom: '5px', ml:'5px'}}>
-                                        <Typography variant="h3" gutterBottom  onClick={handleOnClickTitle}>
+                                    <Box sx={{marginBottom: '5px', ml:'5px', mt: '10px'}}>
+                                        <Typography variant="h6" gutterBottom  onClick={handleOnClickTitle}>
                                             {titleEdit ? 
                                                 <TextField 
                                                     variant="outlined" 
                                                     defaultValue={taskDataState.v_title}  
                                                     value={titleData} 
                                                     onKeyPress={handleOnKeyPressTitle} 
+                                                    onChange={(event) => {
+                                                        setTitleData(event.target.value)
+                                                    }}
                                                     onBlur={handleOnBlurTitle}
                                                 />
                                                 : taskDataState.v_title
                                             }
                                         </Typography>
-                                        <Typography style={{height: '300px'}} onClick={handleOnClickDescription}>
+                                        <Typography style={{height: '290px', whiteSpace: 'pre-line'}} onClick={handleOnClickDescription}>
                                             { descriptionEdit ? 
                                                 // <TextEditor/>
                                                 <TextField 
@@ -266,13 +319,69 @@ export default function SingleDataBacklogContents({
                                                     variant="outlined" 
                                                     defaultValue={taskDataState.v_description}  
                                                     value={descriptionData} 
-                                                    // onKeyPress={handleOnKeyPressDescription} 
+                                                    onChange={(event) => {
+                                                        setDescriptionData(event.target.value)
+                                                    }}
                                                     onBlur={handleOnBlurDescription}
                                                     minRows={10}
                                                     maxRows={20}
                                                     sx={{width: '450px'}}
                                                 />
                                                 :taskDataState.v_description
+                                            }
+                                        </Typography>
+                                        <Typography onDoubleClick={handleOnClickWeblink}>
+                                            Link Web : 
+                                            { weblinkEdit ? 
+                                                // <WEBLINK/>
+                                                <TextField 
+                                                    multiline={true} 
+                                                    variant="outlined" 
+                                                    defaultValue={taskDataState.v_web_link}  
+                                                    value={weblinkData} 
+                                                    onChange={(event) => {
+                                                        setWeblinkData(event.target.value)
+                                                    }}
+                                                    onBlur={handleOnBlurWeblink}
+                                                    size={'small'}
+                                                />
+                                                : taskDataState.v_web_link ? <Link href={taskDataState.v_web_link ? taskDataState.v_web_link : '#'} rel="noreferrer" target="_blank" >Click Here</Link> : '-'
+                                            }
+                                        </Typography>
+                                        <Typography onDoubleClick={handleOnClickDesignLink}>
+                                            Design Mockup : 
+                                            { designLinkEdit ? 
+                                                // <DesignLink/>
+                                                <TextField 
+                                                    multiline={true} 
+                                                    variant="outlined" 
+                                                    defaultValue={taskDataState.v_design_link}  
+                                                    value={designLinkData} 
+                                                    onChange={(event) => {
+                                                        setDesignLinkData(event.target.value)
+                                                    }}
+                                                    onBlur={handleOnBlurDesignLink}
+                                                    size={'small'}
+                                                />
+                                                :<Link href={taskDataState.v_design_link ? taskDataState.v_design_link : '#'} rel="noreferrer" target="_blank" >Click Here</Link>
+                                            }
+                                        </Typography>
+                                        <Typography onDoubleClick={handleOnClickRepoLink}>
+                                            Repository : 
+                                            { repoLinkEdit ? 
+                                                // <Repo/>
+                                                <TextField 
+                                                    multiline={true} 
+                                                    variant="outlined" 
+                                                    defaultValue={taskDataState.v_repo_link}  
+                                                    value={repoLinkData} 
+                                                    onChange={(event) => {
+                                                        setRepoLinkData(event.target.value)
+                                                    }}
+                                                    onBlur={handleOnBlurRepoLink}
+                                                    size={'small'}
+                                                />
+                                                :<Link href={taskDataState.v_repo_link ? taskDataState.v_repo_link : '#'} rel="noreferrer" target="_blank" >Click Here</Link>
                                             }
                                         </Typography>
                                         <Typography gutterBottom component="div" onClick={handleOnClickAssigne} >
@@ -339,38 +448,38 @@ export default function SingleDataBacklogContents({
                             
                         </Stack>
                     </Grid>
-                    {!taskDataState?.c_backlog_id_parent ?
-                        <Grid items xs={5}>
-                            <Grid container direction='row' alignItems="center" >
-                                <Grid items xs={9}>
-                                    <Typography>Subtask</Typography>
-                                </Grid>
-                                <Grid items xs={3} >
-                                    <Button variant="contained" style={{marginLeft: '19px'}} onClick={onAddNewSubHandler}>ADD</Button>
-                                </Grid>
+                    <Grid items xs={5}>
+                        <Grid container direction='row' alignItems="center" >
+                            <Grid items xs={9}>
+                                <Typography>Subtask</Typography>
                             </Grid>
-                            {
-                                taskState.result?.length > 0 ? 
-                                    taskState.result.map(x => {
-                                        return <Grid container direction='row' alignItems="center" style={{border: '1px solid', marginTop: '5px'}} onClick={() => history('/backlogs/'+x.c_backlog_id)}>
-                                            <Grid items xs={3}>
-                                                <BoltIconWrap/>
-                                            </Grid>
-                                            <Grid items xs={6}>
-                                                <Typography variant="body" gutterBottom component="div">{x.v_title}</Typography>
-                                            </Grid>
-                                            <Grid items xs={3}>
-                                                <Typography variant="body" gutterBottom component="div">{user ? user.filter(y => y.c_user_id === x.c_assignee)[0]?.v_fullname : x.c_assignee}</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    })
-                                : ''
-                            }
-                            {isNewSub && 
-                                <BacklogAdd sprintData={sprintData} taskData={taskData}/>
-                            }
+                            <Grid items xs={3} >
+                                <Button variant="contained" style={{marginLeft: '19px'}} onClick={onAddNewSubHandler}>ADD</Button>
+                            </Grid>
                         </Grid>
-                    : ''}
+                        {
+                            taskState.result?.length > 0 ? 
+                                taskState.result.map(x => {
+                                    return <Grid container direction='row' alignItems="center" style={{border: '1px solid', marginTop: '5px'}} onClick={() => history(`/backlogs/${x.c_backlog_id}?c_sprint_id=${sprintData.c_sprint_id ? sprintData.c_sprint_id : sprintData}`)}>
+                                        <Grid items xs={3}>
+                                            <BoltIconWrap/>
+                                        </Grid>
+                                        <Grid items xs={6}>
+                                            <Typography variant="body" gutterBottom component="div">{x.v_title}</Typography>
+                                        </Grid>
+                                        <Grid items xs={3}>
+                                            <Typography variant="body" gutterBottom component="div">{user ? user.filter(y => y.c_user_id === x.c_assignee)[0]?.v_fullname : x.c_assignee}</Typography>
+                                        </Grid>
+                                    </Grid>
+                                })
+                            : ''
+                        }
+                        {isNewSub && 
+                            <BacklogAdd sprintData={sprintData} taskData={taskData}/>
+                        }
+                    </Grid>
+                    {/* {!taskDataState?.c_backlog_id_parent ?
+                    : ''} */}
                 </Grid>
             </Box>
         </Modal>

@@ -1,18 +1,24 @@
 import Styles from './styles';
 import { NavLink } from "react-router-dom"
+import { useSelector } from 'react-redux';
 
-import { PlaylistAddCheckIconWrap, ListIconWrap, EventNoteIconWrap } from './Icons';
+import { PlaylistAddCheckIconWrap, ListIconWrap, EventNoteIconWrap, EngineeringIconWrap } from './Icons';
 import Typography from '@mui/material/Typography';
 
 import Box from '@mui/material/Box';
 
 const NavigationBar = () => {
+    const authState = useSelector(state => state.auth)
     const classes = Styles.NavigationBar();
-    const navList = [
+    let navList = [
         {to: '/home', label: 'Active Sprint', icon: (<PlaylistAddCheckIconWrap sx={{color: 'white', fontSize: '35px'}}/>)},
         {to: '/backlogs', label: 'Backlogs', icon: (<ListIconWrap sx={{color: 'white', fontSize: '35px'}}/>)},
-        {to: '/sprints', label: 'Sprints', icon:(<EventNoteIconWrap sx={{color: 'white', fontSize: '35px'}}/>)}
+        {to: '/sprints', label: 'Sprints', icon:(<EventNoteIconWrap sx={{color: 'white', fontSize: '35px'}}/>)},
+        
     ]
+    if (authState?.result?.role === 'productowner') {
+        navList.push({to: '/users', label: 'Users', icon:(<EngineeringIconWrap sx={{color: 'white', fontSize: '35px'}}/>)})
+    }
     return (
         <Box sx={{
             backgroundColor: 'primary.main',

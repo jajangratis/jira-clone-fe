@@ -1,28 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit' 
-const initialState = {
+const initialusersState = {
     isLoading: false,
     error: false,
     errorMessage: '',
     result: []
 }
 
-const backlogTasksSlice = createSlice({
-    name: 'backlogTasks',
-    initialState,
+const usersSlice = createSlice({
+    name: 'users',
+    initialState: initialusersState,
     reducers: {
-        getData(state, action) {
-            console.log(action.payload.type, {state});
+        userListData(state, action) {
+            console.log(action.payload.type, action.payload);
             switch (action.payload.type) {
-                case 'BACKLOG_TASK_DATA_REDUCER_PENDING':
+                case 'USERS_DATA_REDUCER_PENDING':
                     state.isLoading = true
                     state.error = false
                     break;
-                case 'BACKLOG_TASK_DATA_REDUCER_REJECTED':
+                case 'USERS_DATA_REDUCER_REJECTED':
                     state.isLoading = false
                     state.error = true
                     state.result = action.payload?.data
                     break;
-                case 'BACKLOG_TASK_DATA_REDUCER_FULFILLED':
+                case 'USERS_DATA_REDUCER_FULFILLED':
                     state.isLoading = false
                     state.error = false
                     state.result = action.payload?.data.data
@@ -32,19 +32,40 @@ const backlogTasksSlice = createSlice({
                     break;
             }
         },
-        addSubTask(state, action) {
-            console.log(action.payload.type, {state});
+        addUserData(state, action) {
+            console.log(action.payload.type, action.payload);
             switch (action.payload.type) {
-                case 'BACKLOG_TASK_SUBTASK_ADD_REDUCER_PENDING':
+                case 'USERS_ADD_DATA_REDUCER_PENDING':
                     state.isLoading = true
                     state.error = false
                     break;
-                case 'BACKLOG_TASK_SUBTASK_ADD_REDUCER_REJECTED':
+                case 'USERS_ADD_DATA_REDUCER_REJECTED':
                     state.isLoading = false
                     state.error = true
-                    state.result = action.payload?.data
+                    state.errorMessage = action.payload?.data.data.msg
                     break;
-                case 'BACKLOG_TASK_SUBTASK_ADD_REDUCER_FULFILLED':
+                case 'USERS_ADD_DATA_REDUCER_FULFILLED':
+                    state.isLoading = false
+                    state.error = false
+                    state.result = [...state.result, ...action.payload?.data.data]
+                    break;
+            
+                default:
+                    break;
+            }
+        },
+        deleteUserData(state, action) {
+            console.log(action.payload.type, action.payload);
+            switch (action.payload.type) {
+                case 'USERS_DELETE_DATA_REDUCER_PENDING':
+                    state.isLoading = true
+                    state.error = false
+                    break;
+                case 'USERS_DELETE_DATA_REDUCER_REJECTED':
+                    state.isLoading = false
+                    state.error = true
+                    break;
+                case 'USERS_DELETE_DATA_REDUCER_FULFILLED':
                     state.isLoading = false
                     state.error = false
                     state.result = action.payload?.data.data
@@ -54,40 +75,28 @@ const backlogTasksSlice = createSlice({
                     break;
             }
         },
-        editSubTask(state, action) {
-            console.log(action.payload.type, {state});
+        editUserData(state, action) {
+            console.log(action.payload.type, action.payload);
             switch (action.payload.type) {
-                case 'BACKLOG_TASK_SUBTASK_EDIT_REDUCER_PENDING':
+                case 'USERS_EDIT_DATA_REDUCER_PENDING':
                     state.isLoading = true
                     state.error = false
                     break;
-                case 'BACKLOG_TASK_SUBTASK_EDIT_REDUCER_REJECTED':
+                case 'USERS_EDIT_DATA_REDUCER_REJECTED':
                     state.isLoading = false
                     state.error = true
                     break;
-                case 'BACKLOG_TASK_SUBTASK_EDIT_REDUCER_FULFILLED':
+                case 'USERS_EDIT_DATA_REDUCER_FULFILLED':
                     state.isLoading = false
                     state.error = false
-                    break;
-            
-                default:
-                    break;
-            }
-        },
-        deleteSubTask(state, action) {
-            console.log(action.payload.type, {state});
-            switch (action.payload.type) {
-                case 'BACKLOG_TASK_SUBTASK_DELETE_REDUCER_PENDING':
-                    state.isLoading = true
-                    state.error = false
-                    break;
-                case 'BACKLOG_TASK_SUBTASK_DELETE_REDUCER_REJECTED':
-                    state.isLoading = false
-                    state.error = true
-                    break;
-                case 'BACKLOG_TASK_SUBTASK_DELETE_REDUCER_FULFILLED':
-                    state.isLoading = false
-                    state.error = false
+                    let existingArray = [...state.result]
+                    state.result = existingArray.map(x => {
+                        if (x.c_user_id === action.payload?.data.data[0].c_user_id) {
+                            return action.payload?.data.data[0]
+                        } else {
+                            return x
+                        }
+                    })
                     break;
             
                 default:
@@ -97,6 +106,6 @@ const backlogTasksSlice = createSlice({
     }
 })
 
-export const backlogTasksActions = backlogTasksSlice.actions
+export const usersActions = usersSlice.actions
 
-export default backlogTasksSlice.reducer
+export default usersSlice.reducer

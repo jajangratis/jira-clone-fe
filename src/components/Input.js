@@ -86,7 +86,6 @@ export const InputDate = ({
     form,
 }) => {
   const [newValue, setNewValueValue] = useState(moment(field.value,'YYYY-MM-DD').format('YYYY-MM-DD').toString());
-  console.log({newValue, field});
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={3}>

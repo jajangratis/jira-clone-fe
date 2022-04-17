@@ -8,6 +8,7 @@ import backlogTasksReducer from './backlogTasks';
 import masterTasksReducer from './master';
 import backlogParentChildReducer from './backlogParentChild';
 import retroReducer from './retro'
+import usersReducer from './users'
 
 const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
         backlogsDetail: backlogsDetailReducer,
         backlogsParentChild:backlogParentChildReducer,
         retro:retroReducer,
+        users:usersReducer,
     }
 });
 

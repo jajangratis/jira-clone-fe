@@ -16,6 +16,7 @@ const Backlogs = React.lazy(() => import('./pages/Backlogs'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const RetroSpective = React.lazy(() => import('./pages/Retro'));
 const SingleDataBacklog = React.lazy(() => import('./pages/Backlogs/components/SingleDataBacklogPage'));
+const Users = React.lazy(() => import('./pages/Users'));
 
 
 
@@ -42,6 +43,7 @@ const MainRoutes = () => {
                 <Route path='/backlogs/:c_backlog_id' element={<SingleDataBacklog/>}/>
                 <Route path='/retrospective/:c_sprint_id' element={<RetroSpective/>}/>
                 <Route path='/sprints' element={<Sprints/>}/>
+                <Route path='/users' element={<Users/>}/>
                 <Route path='*' element={<NotFound/>} />
             </Routes>
             :

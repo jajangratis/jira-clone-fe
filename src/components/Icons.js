@@ -13,7 +13,8 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import EditIcon from '@mui/icons-material/Edit';
 
 export function HomeIcon(props) {
   return (
@@ -26,6 +27,18 @@ export function HomeIcon(props) {
 export function ExpandMoreIconWrap(props) {
   return (
     <ExpandMoreIcon {...props} />
+  );
+}
+
+export function EngineeringIconWrap(props) {
+  return (
+    <EngineeringIcon {...props} />
+  );
+}
+
+export function EditIconWrap(props) {
+  return (
+    <EditIcon {...props} />
   );
 }
 
